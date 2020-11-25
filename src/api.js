@@ -51,11 +51,41 @@ export function get_data_from_db(query) {
 }
 
 export function get_food_from_date() {
-    return axios.get(`http://localhost:3000/get_food_from_date?date=${Date.now()}`)
+    return axios.get(`http://localhost:3000/get_food_from_date?date=${new Date().toISOString()}`)
     .then(res => {
-        return res;
+        console.log(res);
+        return res.data.rows;
     })
     .catch(e => {
         console.log(e);
+    })
+}
+
+export function add_food_to_log(food_name) {
+    return axios.get(`http://localhost:3000/add_food_to_log?food=${food_name}`)
+    .then(res => {
+        console.log(res);
+        return res.data.rows;
+    })
+    .catch(e => {
+        console.log(e);
+    })
+}
+
+export function register_user(data) {
+    console.log(data)
+    return axios({
+        method: "POST",
+        url: 'http://localhost:3000/register_user',
+        data: data
+    })
+    .then(res => {
+        console.log(res);
+        return res.data;
+    })
+    .catch(e => {
+        // console.log(e);
+        console.log(e.response);
+        return e.response.data;
     })
 }

@@ -2,26 +2,24 @@ import React, { useEffect, useState } from 'react'
 import { get_data_from_db, get_food_from_date } from '../api'
 
 export function Log() {
-    const [all_data, set_all_data] = useState(null);
+    const [log_items, set_log_items] = useState([]);
 
-    useEffect(() => {
-        // console.log('log')
-        // get_data_from_db()
-        // .then(res => {
-        //     console.log(res)
-        //     // set_all_data(res.data);
-        // })
-        // get_item("pasta");
-        get_food_from_date();
+    useEffect(async () => {
+        const fetch_foods = async () => {
+            const results = await get_food_from_date();
+            set_log_items(results);
+          }
+          fetch_foods();
     }, [])
 
     return (
         <div>
-            {/* {all_data &&
-                all_data.map(item => {
-                    <div>blah</div>
-                })
-            } */}
+            <div>Daily Food Log</div>
+            {log_items.map(item => {
+                return (
+                    <div>{item.food_name}</div>
+                )
+            })}
         </div>
     )
 }

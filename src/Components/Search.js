@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { search_foods } from '../api.js'
 import styled from 'styled-components'
 
-export function Search() {
+export function Search(props) {
     
     const [results, set_results] = useState([]);
     const [query, set_query] = useState('');
@@ -22,6 +22,16 @@ export function Search() {
         set_query(e.target.value);
     }
 
+    function handle_item_click(item) {
+        if (props.return_selected) {
+            console.log('search is returning selected')
+            props.set(item);
+        } else {
+            console.log('search is pushing to /food?food_name')
+            history.push(`/food?${item.food_name}`);
+        }
+    }
+
     return (
         <Wrapper>
             <Input onChange={handle_query_input} value={query} placeholder="search" />
@@ -30,7 +40,7 @@ export function Search() {
                 {results.common &&
                     results.common.map((r, i) => {
                         return (
-                            <Item key={i} onClick={() => {history.push(`/food?${r.food_name}`)}}>
+                            <Item key={i} onClick={() => {handle_item_click(r)}}>
                                 <Thumbnail src={r.photo.thumb} />
                                 <Name>{r.food_name}</Name>
                             </Item>

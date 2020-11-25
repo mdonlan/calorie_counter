@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { get_item } from './api';
+import { get_item } from '../api';
 
 export function Food() {
     const location = useLocation();
