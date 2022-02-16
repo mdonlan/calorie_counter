@@ -5,11 +5,15 @@ import { Add_Food } from './Add_Food'
 import { Weekly_Chart } from './Weekly_Chart'
 
 export function Home() {
+
     return(
         <div>
+            <React.Fragment>
+                <Log />
+                <Weekly_Chart />
+            </React.Fragment>
             {/* <Search /> */}
-            <Log />
-            <Weekly_Chart />
+            
             {/* <Add_Food /> */}
         </div>
     )

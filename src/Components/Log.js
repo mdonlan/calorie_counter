@@ -56,7 +56,7 @@ export function Log() {
 
     return (
         <Wrapper>
-            <Today_Date>Today {new Date().toLocaleDateString()}</Today_Date>
+            <Today_Date>Daily Food Log - Today {new Date().toLocaleDateString()}</Today_Date>
             <Meal_Header>
                 <Title>Breakfast</Title>
                 <Add_Food meal='breakfast'/>    
@@ -142,7 +142,7 @@ const Wrapper = styled.div`
     border: 1px solid #222222;
     margin: 8px;
     padding: 8px;
-    width: 50%;
+    width: 500px;
 `
 
 const Today_Date = styled.div``

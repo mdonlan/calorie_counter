@@ -1,4 +1,5 @@
 import axios from 'axios'
+import superagent from 'superagent'
 import { set_food_items_today, set_logged_in, set_username, store } from './store'
 
 // search the nutritionix api for matching foods
@@ -203,5 +204,26 @@ export function get_weekly_calories() {
     })
     .catch(e => {
         console.log(e);
+    })
+}
+
+export function login(data, history) {
+    console.log('login');
+    console.log(data);
+
+    return superagent.post('http://localhost:3000/login')
+    .send({ username: data.username, password: data.password })
+    .then(res => {
+        console.log(res);
+        console.log('logged in')
+        localStorage.setItem("token", res.body.token);
+        // store.dispatch(set_token(res.body.token));
+        store.dispatch(set_logged_in(true));
+        // history.push("/");
+        return res.body.message;
+    })
+    .catch(e => {
+        console.log(e)
+        return e.message;
     })
 }

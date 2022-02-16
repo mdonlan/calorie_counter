@@ -16,6 +16,7 @@ import { Register } from './Register'
 import { Login } from './Login'
 import { validate_token } from '../api'
 import { useSelector } from 'react-redux';
+import { Login_Or_Register } from './Login_Or_Register';
 
 export function App() {
 
@@ -26,6 +27,8 @@ export function App() {
         const token = localStorage.getItem("token");
         if (token) {
             validate_token(token);
+        } else {
+            console.log("NO TOKEN STORED");
         }
         // get_data_from_db();
     }, [logged_in])
@@ -36,12 +39,17 @@ export function App() {
                 {/* <Search /> */}
                 {/* <Log /> */}
                 <Top_Nav />
-                <Switch>
-                    <Route path="/" exact component={Home} /> 
-                    <Route path="/food" component={Food} /> 
-                    <Route path="/register" component={Register} /> 
-                    <Route path="/login" component={Login} /> 
-                </Switch>
+                {logged_in &&
+                    <Switch>
+                        <Route path="/" exact component={Home} /> 
+                        <Route path="/food" component={Food} /> 
+                        <Route path="/register" component={Register} /> 
+                        <Route path="/login" component={Login} /> 
+                    </Switch>
+                }
+                {!logged_in &&
+                    <Login_Or_Register />
+                }
             </Router>
         </Wrapper>
     )

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { get_weekly_calories } from '../api';
+import styled from 'styled-components'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
+import { get_weekly_calories } from '../api'
 
 export function Weekly_Chart() {
 
@@ -26,12 +27,18 @@ export function Weekly_Chart() {
     // const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}, {name: 'Page B', uv: 300, pv: 2200, amt: 2400}];
 
     return (
-        <LineChart width={400} height={400} data={data}>
-            <XAxis dataKey="date"/>
-            <YAxis dataKey="calories" domain={[0, max]}/>
-            {/* <Legend align="left"/> */}
-            <Line type="monotone" dataKey="calories" stroke="#3277a8" />
-            <Line type="monotone" dataKey="goal" stroke="#a84632" />
-        </LineChart>
+        <Wrapper>
+            <Title>Weekly Calories</Title>
+            <LineChart width={400} height={400} data={data}>
+                <XAxis dataKey="date"/>
+                <YAxis dataKey="calories" domain={[0, max]}/>
+                {/* <Legend align="left"/> */}
+                <Line type="monotone" dataKey="calories" stroke="#3277a8" />
+                <Line type="monotone" dataKey="goal" stroke="#a84632" />
+            </LineChart>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled.div``
+const Title = styled.div``
