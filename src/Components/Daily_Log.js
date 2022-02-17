@@ -7,7 +7,7 @@ import { Add_Food } from './Add_Food';
 import { Edit_Log_Item } from './Edit_Log_Item';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export function Log() {
+export function Daily_Log() {
     const log_items = useSelector(state => state.default.food_items_today);
     const [totals, set_totals] = useState({
         cals: 0,

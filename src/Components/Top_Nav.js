@@ -1,16 +1,26 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux';
 
 export function Top_Nav() {
+
+    const logged_in = useSelector(state => state.default.logged_in);
+
     return (
         <Wrapper>
             <Left>
                 <Styled_Link to={'/'}>Home</Styled_Link>
+                <Styled_Link to={'/weekly_chart'}>Weekly Chart</Styled_Link>
+                <Styled_Link to={'/create_user_food'}>Create User Food</Styled_Link>
             </Left>
             <Right>
-                <Styled_Link to={'/Register'}>Register</Styled_Link>
-                <Styled_Link to={'/Login'}>Login</Styled_Link>
+                {!logged_in &&
+                    <React.Fragment>
+                        <Styled_Link to={'/Register'}>Register</Styled_Link>
+                        <Styled_Link to={'/Login'}>Login</Styled_Link>
+                    </React.Fragment>
+                }
             </Right>
         </Wrapper>
     )
