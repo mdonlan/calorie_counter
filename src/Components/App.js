@@ -14,7 +14,7 @@ import { Food } from './Food'
 import { Top_Nav } from './Top_Nav'
 import { Register } from './Register'
 import { Login } from './Login'
-import { validate_token } from '../api'
+import { validate_token, check_for_token } from '../api'
 import { useSelector } from 'react-redux';
 import { Login_Or_Register } from './Login_Or_Register';
 import { Weekly_Chart } from './Weekly_Chart';
@@ -25,8 +25,7 @@ export function App() {
     const logged_in = useSelector(state => state.default.logged_in);
 
     useEffect(() => {
-        console.log('logged_in: ' + logged_in)
-        const token = localStorage.getItem("token");
+        const token = check_for_token();
         if (token) {
             validate_token(token);
         } else {

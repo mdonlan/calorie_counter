@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
+import { create_user_food } from '../api';
 
 export function Create_User_Food() {
 
@@ -14,7 +15,7 @@ export function Create_User_Food() {
     const [food_name, set_food_name] = useState('');
     const [serving_size_unit, set_serving_size_unit] = useState(unit_types[0]);
     const [serving_size, set_serving_size] = useState(1);
-    const [serving_size_cals, set_serving_size_cals] = useState(0);
+    const [cals_per_serving, set_cals_per_serving] = useState(0);
     const [carbs, set_carbs] = useState(0);
     const [protein, set_protein] = useState(0);
     const [total_fat, set_total_fat] = useState(0);
@@ -56,6 +57,33 @@ export function Create_User_Food() {
         Iron
     */
 
+    async function handle_submit() {
+        console.log("submitting create user food")
+        const result = await create_user_food({
+            "food_name": food_name,
+            "serving_size_unit": serving_size_unit,
+            "serving_size": serving_size,
+            "cals_per_serving": cals_per_serving,
+            "carbs": carbs,
+            "protein": protein,
+            "total_fat": total_fat,
+            "trans_fat": trans_fat,
+            "sat_fat": sat_fat,
+            "poly_fat": poly_fat,
+            "mono_fat": mono_fat,
+            "cholesterol": cholesterol,
+            "sodium": sodium,
+            "potassium": potassium,
+            "fiber": fiber,
+            "sugar": sugar,
+            "vitamin_a": vitamin_a,
+            "vitamin_c": vitamin_c,
+            "calcium": calcium,
+            "iron": iron
+        });
+        console.log(result)
+    }
+
     return(
         <Wrapper>
             <Row>
@@ -78,7 +106,7 @@ export function Create_User_Food() {
             </Row>
             <Row>
                 <Desc>Cals per serving</Desc>
-                <Input onChange={e => {set_serving_size_cals(e.target.value)}} value={serving_size_cals}></Input>
+                <Input onChange={e => {set_cals_per_serving(e.target.value)}} value={cals_per_serving}></Input>
             </Row>
             <Row>
                 <Desc>Carbs</Desc>
@@ -90,19 +118,19 @@ export function Create_User_Food() {
             </Row>
             <Row>
                 <Desc>Total Fat</Desc>
-                <Input onChange={e => {set_fat(e.target.value)}} value={total_fat}></Input>
+                <Input onChange={e => {set_total_fat(e.target.value)}} value={total_fat}></Input>
             </Row>
             <Row>
                 <Desc>Saturated Fat</Desc>
-                <Input onChange={e => {set_saturated_fat(e.target.value)}} value={sat_fat}></Input>
+                <Input onChange={e => {set_sat_fat(e.target.value)}} value={sat_fat}></Input>
             </Row>
             <Row>
                 <Desc>Polyunsaturated Fat</Desc>
-                <Input onChange={e => {set_polyunsaturated_fat(e.target.value)}} value={poly_fat}></Input>
+                <Input onChange={e => {set_poly_fat(e.target.value)}} value={poly_fat}></Input>
             </Row>
             <Row>
                 <Desc>Monounsaturated Fat</Desc>
-                <Input onChange={e => {set_monounsaturated_fat(e.target.value)}} value={mono_fat}></Input>
+                <Input onChange={e => {set_mono_fat(e.target.value)}} value={mono_fat}></Input>
             </Row>
             <Row>
                 <Desc>Cholesterol</Desc>
@@ -129,10 +157,6 @@ export function Create_User_Food() {
                 <Input onChange={e => {set_vitamin_a(e.target.value)}} value={vitamin_a}></Input>
             </Row>
             <Row>
-                <Desc>Fiber</Desc>
-                <Input onChange={e => {set_fiber(e.target.value)}} value={fiber}></Input>
-            </Row>
-            <Row>
                 <Desc>Calcium</Desc>
                 <Input onChange={e => {set_calcium(e.target.value)}} value={calcium}></Input>
             </Row>
@@ -140,6 +164,7 @@ export function Create_User_Food() {
                 <Desc>Iron</Desc>
                 <Input onChange={e => {set_iron(e.target.value)}} value={iron}></Input>
             </Row>
+            <div onClick={() => {handle_submit()}}>create</div>
         </Wrapper>
     )
 }

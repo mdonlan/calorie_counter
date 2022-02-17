@@ -2,6 +2,8 @@ import axios from 'axios'
 import superagent from 'superagent'
 import { set_food_items_today, set_logged_in, set_username, store } from './store'
 
+let stored_token = null;
+
 // search the nutritionix api for matching foods
 // returns two arrays, branded and common
 export function search_foods(query) {
@@ -226,4 +228,29 @@ export function login(data, history) {
         console.log(e)
         return e.message;
     })
+}
+
+export function create_user_food(data) {
+    console.log('create_user_food');
+    console.log(data);
+
+    return superagent.post('http://localhost:3000/create_user_food')
+    .send({"data": data, "token": stored_token})
+    .then(res => {
+        console.log(res);
+        console.log("successfully created new user food")
+        return res.body.message;
+    })
+    .catch(e => {
+        console.log(e)
+        return e.message;
+    })
+}
+
+export function check_for_token() {
+    const token = localStorage.getItem("token");
+    if (token) {
+        stored_token = token;
+    }
+    return token;
 }
