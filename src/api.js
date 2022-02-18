@@ -6,11 +6,27 @@ let stored_token = null;
 
 // search the nutritionix api for matching foods
 // returns two arrays, branded and common
-export function search_foods(query) {
+export function search_foods_nutritionix(query) {
     return axios.get(`https://trackapi.nutritionix.com/v2/search/instant?query=${query}&detailed=true`, {
         headers: {
             "x-app-id": "19cbe08c",
             "x-app-key": "8dffdef9be5f87ff5ce316816ca87b0a"
+        }
+    })
+    .then(res => {
+        console.log(res.data);
+        return res;
+    })
+    .catch(e => {
+        console.log(e);
+    })
+}
+
+export function search_foods_user_created(query) {
+    console.log('search_food_user_created')
+    return axios.get(`http://localhost:3000/search_foods_user_created?query=${query}`, {
+        headers: {
+            "Authorization" : `Bearer ${stored_token}`
         }
     })
     .then(res => {

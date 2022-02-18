@@ -1,8 +1,5 @@
 import React from 'react'
-import { Search } from './Search'
 import { Daily_Log } from './Daily_Log'
-import { Add_Food } from './Add_Food'
-import { Weekly_Chart } from './Weekly_Chart'
 
 export function Home() {
 
