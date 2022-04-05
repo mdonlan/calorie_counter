@@ -7,7 +7,7 @@ import {
   } from "react-router-dom";
 import { get_data_from_db, get_item } from '../api'
 import styled from 'styled-components'
-import { Search } from './Search'
+// import { Search } from './Search'
 // import { Log } from './Daily_Log'
 import { Home } from './Home'
 import { Food } from './Food'
@@ -37,8 +37,6 @@ export function App() {
     return (
         <Wrapper>
             <Router>
-                {/* <Search /> */}
-                {/* <Log /> */}
                 <Top_Nav />
                 {logged_in &&
                     <Switch>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { search_foods, get_food_details } from '../api.js'
+import { search_foods, get_food_details } from '../../api.js'
 import styled from 'styled-components'
 import { Search_Results_Nutritionix } from './Search_Results_Nutritionix.js';
 import { Search_Results_User_Created } from './Search_Results_User_Created';
@@ -13,8 +13,8 @@ export function Search(props) {
     return (
         <Wrapper>
             <Input onChange={e => set_query(e.target.value)}  value={query} placeholder="search" />
-            {/* <Search_Results_Nutritionix /> */}
-            <Search_Results_User_Created query={query}/>
+            <Search_Results_Nutritionix query={query} set_food={props.set_food} />
+            {/* <Search_Results_User_Created query={query}/> */}
         </Wrapper>
     )
 }

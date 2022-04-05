@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { add_food_to_log, get_food_from_date } from '../api';
+import { add_food_to_log, get_food_from_date } from '../../api';
 import { Search } from './Search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -51,7 +51,7 @@ export function Add_Food(props) {
                 <Bottom>
                     {active && !food &&
                         <div>
-                            <Search return_selected={true} set={set_food}/>
+                            <Search set_food={set_food}/>
                         </div>
                     }
                     {active && food &&

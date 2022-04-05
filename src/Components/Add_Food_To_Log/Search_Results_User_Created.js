@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { search_foods_user_created } from '../api.js'
+import { search_foods_user_created } from '../../api.js'
 import styled from 'styled-components'
+import { set_add_food_selection } from '../../store.js';
 
 export function Search_Results_User_Created(props) {
     const [results, set_results] = useState([]);
@@ -13,7 +14,8 @@ export function Search_Results_User_Created(props) {
             search_foods_user_created(props.query)
             .then(async res => {
                 // console.log(res.data)
-                set_results(res.data);
+                // set_results(res.data);
+                // set_add_food_selection()
             })
         }
     }, [props.query])
@@ -34,9 +36,9 @@ export function Search_Results_User_Created(props) {
 
     return (
         <Wrapper>
-            {results.map(result => {
+            {results.map((result, i) => {
                 return (
-                    <div>{result.food_name}</div>
+                    <div key={i}>{result.food_name}</div>
                 )
             })}
         </Wrapper>

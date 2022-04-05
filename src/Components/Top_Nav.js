@@ -10,9 +10,13 @@ export function Top_Nav() {
     return (
         <Wrapper>
             <Left>
-                <Styled_Link to={'/'}>Home</Styled_Link>
-                <Styled_Link to={'/weekly_chart'}>Weekly Chart</Styled_Link>
-                <Styled_Link to={'/create_user_food'}>Create User Food</Styled_Link>
+                {logged_in &&
+                    <React.Fragment>
+                        <Styled_Link to={'/'}>Home</Styled_Link>
+                        <Styled_Link to={'/weekly_chart'}>Weekly Chart</Styled_Link>
+                        <Styled_Link to={'/create_user_food'}>Create User Food</Styled_Link>
+                    </React.Fragment>
+                }
             </Left>
             <Right>
                 {!logged_in &&

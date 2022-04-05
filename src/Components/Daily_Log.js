@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { get_data_from_db, get_food_details, get_food_from_date } from '../api'
-import { Add_Food } from './Add_Food';
+import { Add_Food } from './Add_Food_To_Log/Add_Food';
 import { Edit_Log_Item } from './Edit_Log_Item';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -140,8 +140,8 @@ export function Daily_Log() {
 
 const Wrapper = styled.div`
     border: 1px solid #222222;
-    margin: 8px;
-    padding: 8px;
+    margin: 20px;
+    padding: 20px;
     width: 500px;
 `
 
@@ -172,7 +172,8 @@ const Item = styled.div`
 `
 
 const Totals = styled.div`
-    margin-top: 20px;
+    margin-top: 30px;
+    border-top: 1px solid #111111;
 `
 
 const Total_Item = styled.div``

@@ -1,39 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { search_foods_nutritionix, get_food_details } from '../api.js'
+import { search_foods_nutritionix } from '../../api.js'
 import styled from 'styled-components'
 
 export function Search_Results_Nutritionix(props) {
     const [results, set_results] = useState([]);
-    const [query, set_query] = useState('');
     const history = useHistory();
     
     useEffect(() => {
-        if (query.length > 2) {
-            search_foods_nutritionix(query)
+        console.log("props: ", props);
+        if (props.query.length > 2) {
+            search_foods_nutritionix(props.query)
             .then(async res => {
                 set_results(res.data);
             })
         }
-    }, [query])
-
-    function handle_query_input(e) {
-        set_query(e.target.value);
-    }
+    }, [props.query])
 
     function handle_item_click(item) {
-        if (props.return_selected) {
-            // console.log('search is returning selected')
-            props.set(item);
-        } else {
-            // console.log('search is pushing to /food?food_name')
-            history.push(`/food?${item.food_name}`);
-        }
+        props.set_food(item);
     }
 
     return (
         <Wrapper>
-            <Input onChange={handle_query_input} value={query} placeholder="search" />
             <Results>
                 {results.common && <Title>Common</Title>}
                 {results.common &&
