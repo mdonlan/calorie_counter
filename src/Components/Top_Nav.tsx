@@ -2,10 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
-export function Top_Nav() {
+export default function Top_Nav() {
 
-    const logged_in = useSelector(state => state.default.logged_in);
+    const logged_in = useSelector((state: RootState) => state.default.logged_in);
 
     return (
         <Wrapper>

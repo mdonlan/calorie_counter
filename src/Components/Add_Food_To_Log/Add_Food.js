@@ -10,12 +10,12 @@ export function Add_Food(props) {
     const [food, set_food] = useState(null);
     const [qty, set_qty] = useState(1);
 
-    useEffect(() => {
-    //    console.log("food: ", food);
-        if (food.full_nutrients) { // using a nutritionix food
-            convert_nutritionix_food(food);
-        }
-    }, [food]);
+    // useEffect(() => {
+    // //    console.log("food: ", food);
+    //     if (food.full_nutrients) { // using a nutritionix food
+    //         convert_nutritionix_food(food);
+    //     }
+    // }, [food]);
 
     function convert_nutritionix_food(food) {
         

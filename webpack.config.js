@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/index.tsx',
     devtool: 'inline-source-map',
     output: {
         filename: 'bundle.js',
@@ -14,6 +14,11 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: ['babel-loader']
+            },
+            { 
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                loader: "ts-loader"
             }
         ]
     },
@@ -23,4 +28,7 @@ module.exports = {
         hot: true,
         historyApiFallback: true // why is this needed? w/out manual routes fail on dev mode!
     },
+    resolve: {
+        extensions: ['.tsx', '.js'],
+      }
 };

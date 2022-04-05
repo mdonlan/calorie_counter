@@ -1,5 +1,7 @@
 import { combineReducers, configureStore, createReducer, createSlice } from '@reduxjs/toolkit'
 
+export type RootState = ReturnType<typeof store.getState>
+
 const default_slice = createSlice({
     name: 'slice',
     initialState: {

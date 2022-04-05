@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { search_foods_user_created } from '../../api.js'
 import styled from 'styled-components'
-import { set_add_food_selection } from '../../store.js';
+import { set_add_food_selection } from '../../store';
 
 export function Search_Results_User_Created(props) {
     const [results, set_results] = useState([]);
