@@ -8,8 +8,7 @@ export function Search_Results_Nutritionix(props) {
     const history = useHistory();
     
     useEffect(() => {
-        console.log("props: ", props);
-        if (props.query.length > 2) {
+        if (props.query.length > 0) {
             search_foods_nutritionix(props.query)
             .then(async res => {
                 set_results(res.data);
@@ -21,8 +20,20 @@ export function Search_Results_Nutritionix(props) {
         props.set_food(item);
     }
 
+    function num_results() {
+        if (results.common) {
+            return results.common.length + results.branded.length;
+        }
+    }
+
     return (
         <Wrapper>
+            {props.query.length > 0 &&
+                <React.Fragment>
+                    <Title>Nutritionix Foods</Title>
+                    <div>Results: {num_results()}</div>
+                </React.Fragment>
+            }
             <Results>
                 {results.common && <Title>Common</Title>}
                 {results.common &&
@@ -64,6 +75,11 @@ export function Search_Results_Nutritionix(props) {
 const Wrapper = styled.div``
 const Input = styled.input``
 
+const Title = styled.div`
+    font-size: 18px;
+    border-bottom: 1px solid #111111;
+`
+
 const Results = styled.div`
     max-height: 300px;
     overflow-y: auto;
@@ -71,7 +87,6 @@ const Results = styled.div`
 `
 
 
-const Title = styled.div``
 const Common = styled.div``
 const Branded = styled.div``
 

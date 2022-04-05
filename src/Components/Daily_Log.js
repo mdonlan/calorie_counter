@@ -86,6 +86,7 @@ export function Daily_Log() {
                             {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
                             <Text>{filtered_item.qty}</Text>
                             <Text>{filtered_item.calories * filtered_item.qty}</Text>
+                            <Text><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Text>
                         </Item>
                     )
                 })}
@@ -102,6 +103,7 @@ export function Daily_Log() {
                             {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
                             <Text>{filtered_item.qty}</Text>
                             <Text>{filtered_item.calories * filtered_item.qty}</Text>
+                            <Text><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Text>
                         </Item>
                     )
                 })}
@@ -118,6 +120,7 @@ export function Daily_Log() {
                             {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
                             <Text>{filtered_item.qty}</Text>
                             <Text>{filtered_item.calories * filtered_item.qty}</Text>
+                            <Text><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Text>
                         </Item>
                     )
                 })}

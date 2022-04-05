@@ -10,11 +10,11 @@ export function Search_Results_User_Created(props) {
     // const history = useHistory();
     
     useEffect(() => {
-        if (props.query.length > 2) {
+        if (props.query.length > 0) {
             search_foods_user_created(props.query)
             .then(async res => {
                 // console.log(res.data)
-                // set_results(res.data);
+                set_results(res.data);
                 // set_add_food_selection()
             })
         }
@@ -24,21 +24,22 @@ export function Search_Results_User_Created(props) {
     //     set_query(e.target.value);
     // }
 
-    // function handle_item_click(item) {
-    //     if (props.return_selected) {
-    //         // console.log('search is returning selected')
-    //         props.set(item);
-    //     } else {
-    //         // console.log('search is pushing to /food?food_name')
-    //         history.push(`/food?${item.food_name}`);
-    //     }
-    // }
+    function handle_item_click(item) {
+        console.log("handle_item_click: ", item);
+        props.set_food(item);
+    }
 
     return (
         <Wrapper>
+            {props.query.length > 0 &&
+                <React.Fragment>
+                    <Title>User Added Foods</Title>
+                    <div>Results: {results.length}</div>
+                </React.Fragment>
+            }
             {results.map((result, i) => {
                 return (
-                    <div key={i}>{result.food_name}</div>
+                    <Result key={i} onClick={() => handle_item_click(result)}>{result.food_name}</Result>
                 )
             })}
         </Wrapper>
@@ -55,13 +56,20 @@ const Wrapper = styled.div``
 // `
 
 
-// const Title = styled.div``
+const Title = styled.div`
+    font-size: 18px;
+    border-bottom: 1px solid #111111;
+`
+
 // const Common = styled.div``
 // const Branded = styled.div``
 
-// const Item = styled.div`
-//     display: flex;
-// `
+const Result = styled.div`
+    /* display: flex; */
+    height: 40px;
+    width: 100%;
+    background-color: red;
+`
 
 // const Item_Left = styled.div`
 //     display: flex;

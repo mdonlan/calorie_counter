@@ -10,9 +10,19 @@ export function Add_Food(props) {
     const [food, set_food] = useState(null);
     const [qty, set_qty] = useState(1);
 
-    async function handle_confirm() {
+    useEffect(() => {
+    //    console.log("food: ", food);
+        if (food.full_nutrients) { // using a nutritionix food
+            convert_nutritionix_food(food);
+        }
+    }, [food]);
 
-        console.log(food)
+    function convert_nutritionix_food(food) {
+        
+    }
+
+    async function handle_confirm() {
+        // console.log(food)
 
         const new_food = {
             name: food.food_name,
@@ -54,7 +64,7 @@ export function Add_Food(props) {
                             <Search set_food={set_food}/>
                         </div>
                     }
-                    {active && food &&
+                    {/* {active && food &&
                         <Selected_Food>
                             <Food_Details>
                                 <div>{food.food_name}</div>
@@ -68,7 +78,7 @@ export function Add_Food(props) {
                                 <Cancel_Button onClick={handle_close}>Cancel</Cancel_Button>
                             </Buttons>
                         </Selected_Food>
-                    }
+                    } */}
                 </Bottom>
             </Panel>
         </Wrapper>
