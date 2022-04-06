@@ -4,6 +4,7 @@ import { search_foods, get_food_details } from '../../api.js'
 import styled from 'styled-components'
 import { Search_Results_Nutritionix } from './Search_Results_Nutritionix.js';
 import { Search_Results_User_Created } from './Search_Results_User_Created';
+// import { Food } from '../Food.js';
 
 export function Search(props) {
     // const [results, set_results] = useState([]);

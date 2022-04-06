@@ -19,10 +19,11 @@ import { useSelector } from 'react-redux';
 import { Login_Or_Register } from './Login_Or_Register';
 import { Weekly_Chart } from './Weekly_Chart';
 import { Create_User_Food } from './Create_User_Food';
+import { RootState } from '../store';
 
 export function App() {
 
-    const logged_in = useSelector(state => state.default.logged_in);
+    const logged_in = useSelector((state: RootState) => state.default.logged_in);
 
     useEffect(() => {
         const token = check_for_token();

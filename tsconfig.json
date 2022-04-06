@@ -28,6 +28,16 @@
     "include": [
       "src/" // *** The files TypeScript should type check ***
     ],
-    "exclude": ["node_modules", "dist"] // *** The files to not type check ***
+    "exclude": ["node_modules", "dist"], // *** The files to not type check ***
+    // "plugins": [
+    //     {
+    //         "transform": "typescript-plugin-styled-components",
+    //         // "type": "config",
+
+    //         // other typescript-plugin-styled-components options can be added here
+    //         // "minify": true,
+    //         // "ssr": true
+    //     }
+    // ]
   }
   
