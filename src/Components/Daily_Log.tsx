@@ -6,9 +6,10 @@ import { get_data_from_db, get_food_details, get_food_from_date } from '../api'
 import { Add_Food } from './Add_Food_To_Log/Add_Food';
 import { Edit_Log_Item } from './Edit_Log_Item';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RootState } from '../store';
 
 export function Daily_Log() {
-    const log_items = useSelector(state => state.default.food_items_today);
+    const log_items = useSelector((state: RootState) => state.default.food_items_today);
     const [totals, set_totals] = useState({
         cals: 0,
         carbs: 0,
@@ -57,6 +58,12 @@ export function Daily_Log() {
     return (
         <Wrapper>
             <Today_Date>Daily Food Log - Today {new Date().toLocaleDateString()}</Today_Date>
+            <Column_Headers>
+                <Column_Title></Column_Title>
+                <Column_Title>Servings</Column_Title>
+                <Column_Title>Calories</Column_Title>
+                <Column_Title></Column_Title>
+            </Column_Headers>
             <Meal_Header>
                 <Title>Breakfast</Title>
                 <Add_Food meal='breakfast'/>    
@@ -67,9 +74,9 @@ export function Daily_Log() {
                         <Item key={i}>
                             <Text>{filtered_item.food_name}</Text>
                             {/* <Text_Input onChange={() => {handle_qty_change(filtered_item)}} value={filtered_item.qty}></Text_Input> */}
-                            <Text>{filtered_item.qty}</Text>
-                            <Text>{filtered_item.calories * filtered_item.qty}</Text>
-                            <Text><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Text>
+                            <Text>{filtered_item.servings}</Text>
+                            <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
+                            <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
                         </Item>
                     )
                 })}
@@ -84,9 +91,9 @@ export function Daily_Log() {
                         <Item key={i}>
                             <Text>{filtered_item.food_name}</Text>
                             {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
-                            <Text>{filtered_item.qty}</Text>
-                            <Text>{filtered_item.calories * filtered_item.qty}</Text>
-                            <Text><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Text>
+                            <Text>{filtered_item.servings}</Text>
+                            <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
+                            <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
                         </Item>
                     )
                 })}
@@ -101,9 +108,9 @@ export function Daily_Log() {
                         <Item key={i}>
                             <Text>{filtered_item.food_name}</Text>
                             {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
-                            <Text>{filtered_item.qty}</Text>
-                            <Text>{filtered_item.calories * filtered_item.qty}</Text>
-                            <Text><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Text>
+                            <Text>{filtered_item.servings}</Text>
+                            <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
+                            <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
                         </Item>
                     )
                 })}
@@ -118,9 +125,9 @@ export function Daily_Log() {
                         <Item key={i}>
                             <Text>{filtered_item.food_name}</Text>
                             {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
-                            <Text>{filtered_item.qty}</Text>
-                            <Text>{filtered_item.calories * filtered_item.qty}</Text>
-                            <Text><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Text>
+                            <Text>{filtered_item.servings}</Text>
+                            <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
+                            <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
                         </Item>
                     )
                 })}
@@ -152,7 +159,7 @@ const Today_Date = styled.div``
 
 const Meal_Header = styled.div`
     display: flex;
-    margin-top: 20px;
+    margin-top: 10px;
     border-bottom: 1px solid #111111;
 `
 
@@ -161,7 +168,8 @@ const Title = styled.div`
 `
 
 const Meal_Items = styled.div`
-    padding: 10px;
+    /* padding: 10px; */
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -185,4 +193,19 @@ const Text = styled.div`
     width: 100px;
 `
 
-const Text_Input = styled.input``
+const Column_Headers = styled.div`
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 30px;
+`
+
+const Edit_Btn = styled.div`
+    width: 20px;
+`
+const Column_Title = styled.div`
+    padding-left: 40px;
+    width: 100px;
+    color: gray;
+    font-size: 14px;
+`
