@@ -19,6 +19,7 @@
     //   "noEmit": true, // Do not emit output (meaning do not compile code, only perform type checking)
       "jsx": "react", // Support JSX in .tsx files
     //   "sourceMap": true, // Generate corrresponding .map file
+    "inlineSourceMap": true,
     //   "declaration": true, // Generate corresponding .d.ts file
     //   "noUnusedLocals": true, // Report errors on unused locals
     //   "noUnusedParameters": true, // Report errors on unused parameters

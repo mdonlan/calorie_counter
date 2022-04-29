@@ -40,7 +40,9 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #111111;
+    background: ${props => props.theme.dp1};
+    padding-top: 12px;
+    padding-bottom: 12px;
 `
 
 const Left = styled.div`
@@ -58,15 +60,14 @@ const Right = styled.div`
 
 const Styled_Link = styled(Link)`
     text-decoration: none;
-    color: ${props => props.theme.font.main};
-    border: 1px solid #111111;
-    padding: 5px;
-    margin-left: 3px;
-    margin-right: 3px;
+    color: ${props => props.theme.color};
+    padding: 12px;
+    margin-left: 6px;
+    margin-right: 6px;
     cursor: pointer;
+    background: ${props => props.theme.dp2};
 
     :hover {
-        background: #111111;
-        color: #dddddd;
+        background: ${props => props.theme.dp3};
     }
 `

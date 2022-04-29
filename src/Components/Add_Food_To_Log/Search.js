@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { search_foods, get_food_details } from '../../api.js'
 import styled from 'styled-components'
-import { Search_Results_Nutritionix } from './Search_Results_Nutritionix.js';
+import { Search_Results_Nutritionix } from './Search_Results_Nutritionix';
 import { Search_Results_User_Created } from './Search_Results_User_Created';
 // import { Food } from '../Food.js';
 
@@ -19,14 +19,18 @@ export function Search(props) {
     return (
         <Wrapper>
             <Input ref={input_ref} onChange={e => set_query(e.target.value)}  value={query} placeholder="search" />
-            <Search_Results_User_Created query={query} set_food={props.set_food} />
+            {/* <Search_Results_User_Created query={query} set_food={props.set_food} /> */}
             <Search_Results_Nutritionix query={query} set_food={props.set_food} />
         </Wrapper>
     )
 }
 
 const Wrapper = styled.div``
-const Input = styled.input``
+const Input = styled.input`
+    &:focus {
+        outline: none;
+    }
+`
 
 const Results = styled.div`
     max-height: 300px;

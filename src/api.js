@@ -3,6 +3,8 @@ import superagent from 'superagent'
 import { set_food_items_today, set_logged_in, set_username, store } from './store'
 
 let stored_token = null;
+const host = 'http://192.168.0.224:3000'; // for dev purposes, allows access on different computers on same network
+// const host = 'http://localhost:3000';
 
 // search the nutritionix api for matching foods
 // returns two arrays, branded and common
@@ -24,7 +26,7 @@ export function search_foods_nutritionix(query) {
 
 export function search_foods_user_created(query) {
     console.log('search_food_user_created')
-    return axios.get(`http://localhost:3000/search_foods_user_created?query=${query}`, {
+    return axios.get(`${host}/search_foods_user_created?query=${query}`, {
         headers: {
             "Authorization" : `Bearer ${stored_token}`
         }
@@ -61,7 +63,7 @@ export function get_item(query) {
 }
 
 export function get_data_from_db(query) {
-    return axios.get(`http://localhost:3000`)
+    return axios.get(`${host}`)
     .then(res => {
         return res;
     })
@@ -71,7 +73,7 @@ export function get_data_from_db(query) {
 }
 
 export function get_food_from_date() {
-    return axios.get(`http://localhost:3000/get_food_from_date?date=${new Date().toISOString()}`)
+    return axios.get(`${host}/get_food_from_date?date=${new Date().toISOString()}`)
     .then(res => {
         // console.log(res);
         store.dispatch(set_food_items_today(res.data.rows));
@@ -92,7 +94,7 @@ export function add_food_to_log(new_food) {
 
     return axios({
         method: "POST",
-        url: 'http://localhost:3000/add_food_to_log',
+        url: `${host}/add_food_to_log`,
         data: data
     })
     .then(res => {
@@ -101,7 +103,7 @@ export function add_food_to_log(new_food) {
     .catch(e => {
         console.log(e);
     })
-    // return axios.get(`http://localhost:3000/add_food_to_log?food=${food_name}`)
+    // return axios.get(`${host}/add_food_to_log?food=${food_name}`)
     // .then(res => {
     //     console.log(res);
     //     return res.data.rows;
@@ -111,11 +113,27 @@ export function add_food_to_log(new_food) {
     // })
 }
 
+export function delete_food_from_log(food) {
+    // how to find which food to delete from db?
+    // should each food entered have a unique id?
+    return axios({
+        method: "POST",
+        url: `${host}/delete_food_from_log`,
+        data: {food: food}
+    })
+    .then(res => {
+        console.log(res);
+    })
+    .catch(e => {
+        console.log(e);
+    })
+}
+
 export function register_user(data) {
     console.log(data)
     return axios({
         method: "POST",
-        url: 'http://localhost:3000/register_user',
+        url: `${host}/register_user`,
         data: data
     })
     .then(res => {
@@ -133,7 +151,7 @@ export function register_user(data) {
 export function validate_token(token) {
     return axios({
         method: "POST",
-        url: 'http://localhost:3000/validate_token',
+        url: `${host}/validate_token`,
         data: { token: token }
     })
     .then(res => {
@@ -192,10 +210,12 @@ export function update_log_item_qty(item, qty) {
         token: token,
     }
 
+    // console.log("update_log_item_qtd data: ", data);
+
     return axios({
         method: "POST",
-        url: 'http://localhost:3000/update_log_item',
-        data: { "data": data }
+        url: `${host}/update_log_item`,
+        data: data
     })
     .then(res => {
         // console.log(res);
@@ -213,7 +233,7 @@ export function get_weekly_calories() {
 
     return axios({
         method: "POST",
-        url: 'http://localhost:3000/get_weekly_calories',
+        url: `${host}/get_weekly_calories`,
         data: {"token": token}
     })
     .then(res => {
@@ -229,7 +249,7 @@ export function login(data, history) {
     console.log('login');
     console.log(data);
 
-    return superagent.post('http://localhost:3000/login')
+    return superagent.post(`${host}/login`)
     .send({ username: data.username, password: data.password })
     .then(res => {
         console.log(res);
@@ -250,7 +270,7 @@ export function create_user_food(data) {
     console.log('create_user_food');
     console.log(data);
 
-    return superagent.post('http://localhost:3000/create_user_food')
+    return superagent.post(`${host}/create_user_food`)
     .send({"data": data, "token": stored_token})
     .then(res => {
         console.log(res);

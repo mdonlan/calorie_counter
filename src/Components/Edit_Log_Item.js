@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { update_log_item_qty } from '../api'
+import { delete_food_from_log, update_log_item_qty } from '../api'
 
 export function Edit_Log_Item(props) {
 
@@ -21,6 +21,7 @@ export function Edit_Log_Item(props) {
             <input onChange={handle_change} value={qty}></input>
             <div onClick={() => {handle_save()}}>save</div>
             <div onClick={() => {props.set_is_editing(false)}}>cancel</div>
+            <div onClick={() => {delete_food_from_log(props.item)}}>delete</div>
         </Wrapper>
     )
 }

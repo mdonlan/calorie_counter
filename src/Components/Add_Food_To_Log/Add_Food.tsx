@@ -27,6 +27,7 @@ export interface Food {
     vitamin_c: number;
     calcium: number;
     iron: number;
+    
 }
 
 // export interface User_Created_Food {
@@ -65,34 +66,33 @@ export function Add_Food(props) {
     //     }
     // }, [food]);
 
-    function convert_nutritionix_food(food) {
-        
-    }
 
     async function handle_confirm() {
+        
         console.log(food)
+        
 
         const new_food: Food = {
             food_name: food.food_name,
             cals_per_serving: food.cals_per_serving,
-            servings: 1,
+            servings: servings,
             serving_size: food.serving_size,
-            carbs: food.carbs,
-            protein: food.protein,
-            total_fat: food.total_fat,
-            trans_fat: food.trans_fat,
-            sat_fat: food.sat_fat,
-            poly_fat: food.poly_fat,
-            mono_fat: food.mono_fat,
-            cholesterol: food.cholesterol,
-            sodium: food.sodium,
-            potassium: food.potassium,
-            fiber: food.fiber,
-            sugar: food.sugar,
-            vitamin_a: food.vitamin_a,
-            vitamin_c: food.vitamin_c,
-            calcium: food.calcium,
-            iron: food.iron,
+            carbs: food.carbs * servings,
+            protein: food.protein * servings,
+            total_fat: food.total_fat * servings,
+            trans_fat: food.trans_fat * servings,
+            sat_fat: food.sat_fat * servings,
+            poly_fat: food.poly_fat * servings,
+            mono_fat: food.mono_fat * servings,
+            cholesterol: food.cholesterol * servings,
+            sodium: food.sodium * servings,
+            potassium: food.potassium * servings,
+            fiber: food.fiber * servings,
+            sugar: food.sugar * servings,
+            vitamin_a: food.vitamin_a * servings,
+            vitamin_c: food.vitamin_c * servings,
+            calcium: food.calcium * servings,
+            iron: food.iron * servings,
             meal:  props.meal
             // cals: food.full_nutrients.find(a => a.attr_id == 208).value,
             // meal: props.meal,
@@ -186,11 +186,11 @@ const Panel = styled.div<{ active: boolean }>`
     flex-direction: column;
     width: 50%;
     height: 50%;
-    background: #d4d4d4;
+    background: #333333;
     position: absolute;
     top: calc(25%);
     left: calc(25%);
-    border: 1px solid #222222;
+    border: 1px solid #dddddd;
 `
 
 

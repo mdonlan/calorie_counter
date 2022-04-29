@@ -58,5 +58,7 @@ export function App() {
 }
 
 const Wrapper = styled.div`
-    color: ${props => props.theme.font.main};
+    color: ${props => props.theme.color};
+    background: ${props => props.theme.background};
+    height: 100%;
 `

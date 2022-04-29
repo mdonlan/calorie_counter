@@ -20,7 +20,7 @@ const styledComponentsTransformer = createStyledComponentsTransformer({
 
 module.exports = {
     entry: './src/index.tsx',
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, '/dist/'),
@@ -52,5 +52,5 @@ module.exports = {
     },
     resolve: {
         extensions: ['.tsx', '.js'],
-      }
+    },
 };

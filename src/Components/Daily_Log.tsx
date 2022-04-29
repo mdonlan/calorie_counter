@@ -65,7 +65,7 @@ export function Daily_Log() {
                 <Column_Title></Column_Title>
             </Column_Headers>
             <Meal_Header>
-                <Title>Breakfast</Title>
+                <Meal_Title>Breakfast</Meal_Title>
                 <Add_Food meal='breakfast'/>    
             </Meal_Header>
             <Meal_Items>
@@ -82,7 +82,7 @@ export function Daily_Log() {
                 })}
             </Meal_Items>
             <Meal_Header>
-                <Title>Lunch</Title>
+                <Meal_Title>Lunch</Meal_Title>
                 <Add_Food meal='lunch'/>
             </Meal_Header>
             <Meal_Items>
@@ -99,7 +99,7 @@ export function Daily_Log() {
                 })}
             </Meal_Items>
             <Meal_Header>
-                <Title>Dinner</Title>
+                <Meal_Title>Dinner</Meal_Title>
                 <Add_Food meal='dinner'/>
             </Meal_Header>
             <Meal_Items>
@@ -110,13 +110,15 @@ export function Daily_Log() {
                             {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
                             <Text>{filtered_item.servings}</Text>
                             <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
-                            <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
+                            <Edit_Btn>
+                                <FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit} size="xs"/>
+                            </Edit_Btn>
                         </Item>
                     )
                 })}
             </Meal_Items>
             <Meal_Header>
-                <Title>Snacks</Title>
+                <Meal_Title>Snacks</Meal_Title>
                 <Add_Food meal='snacks'/>
             </Meal_Header>
             <Meal_Items>
@@ -149,10 +151,11 @@ export function Daily_Log() {
 }
 
 const Wrapper = styled.div`
-    border: 1px solid #222222;
+    color: ${props => props.theme.color};
     margin: 20px;
     padding: 20px;
-    width: 500px;
+    width: 600px;
+    background: ${props => props.theme.dp1};
 `
 
 const Today_Date = styled.div``
@@ -160,37 +163,47 @@ const Today_Date = styled.div``
 const Meal_Header = styled.div`
     display: flex;
     margin-top: 10px;
-    border-bottom: 1px solid #111111;
+    color: ${props => props.theme.color_offset3};
+    border-bottom: 1px solid ${props => props.theme.dp2};
 `
 
-const Title = styled.div`
+const Meal_Title = styled.div`
     margin-right: 10px;
 `
 
 const Meal_Items = styled.div`
-    /* padding: 10px; */
+    margin-bottom: 50px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 50px;
+`
 
+const Edit_Btn = styled.div`
+    width: 12px;
+    height: 12px;
+    color: ${props => props.theme.color_offset4};
 `
 
 const Item = styled.div`
     display: flex;
     justify-content: space-between;
     width: 90%;
+    background: ${props => props.theme.dp1};
+    margin-top: 12px;
+    padding: 3px;
 `
 
 const Totals = styled.div`
     margin-top: 30px;
-    border-top: 1px solid #111111;
+    border-top: 1px solid #dddddd;
 `
 
 const Total_Item = styled.div``
 
 const Text = styled.div`
-    width: 100px;
+    width: 125px;
 `
 
 const Column_Headers = styled.div`
@@ -200,12 +213,9 @@ const Column_Headers = styled.div`
     margin-top: 30px;
 `
 
-const Edit_Btn = styled.div`
-    width: 20px;
-`
 const Column_Title = styled.div`
     padding-left: 40px;
     width: 100px;
-    color: gray;
+    color: ${props => props.theme.dp5};
     font-size: 14px;
 `
