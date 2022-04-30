@@ -12,6 +12,8 @@ interface Nutritionix_Results {
 export function Search_Results_Nutritionix(props) {
     const [results, set_results] = useState<Nutritionix_Results>({common: [], branded: []});
     const history = useHistory();
+    const [show_common, set_show_common] = useState(true);
+    const [show_branded, set_show_branded] = useState(true);
     
     useEffect(() => {
         if (props.query.length > 0) {
@@ -58,7 +60,8 @@ export function Search_Results_Nutritionix(props) {
             vitamin_c: get_nutrient(food, 401),
             calcium: get_nutrient(food, 301),
             iron: get_nutrient(food, 303),
-            meal:  props.meal
+            meal:  props.meal,
+            serving_unit: food.serving_unit
         }
 
         // console.log(food);
@@ -80,13 +83,14 @@ export function Search_Results_Nutritionix(props) {
                 </React.Fragment>
             }
             <Filters>
-                <Filter_Item>Generic</Filter_Item>
-                <Filter_Item>Branded</Filter_Item>
+                <Filter_Item onClick={() => {set_show_branded(true); set_show_common(true)}}>All</Filter_Item>
+                <Filter_Item onClick={() => {set_show_branded(false); set_show_common(true)}}>Common</Filter_Item>
+                <Filter_Item onClick={() => {set_show_branded(true); set_show_common(false)}}>Branded</Filter_Item>
             </Filters>
             <Results>
-                {results.common.length > 0 && <Title>Generic</Title>}
-                {results.common &&
-                    results.common.map((r, i) => {
+                {results.common.length > 0 && show_common && <Title>Common</Title>}
+                {results.common && show_common &&
+                    results.common.slice(0, 5).map((r, i) => {
                         return (
                             <Item key={i} onClick={() => {handle_item_click(r)}}>
                                 <Item_Left>
@@ -105,13 +109,22 @@ export function Search_Results_Nutritionix(props) {
                     })
                 }
 
-                {results.branded.length > 0 && <Title>Branded</Title>}
-                {results.branded &&
-                    results.branded.map((r, i) => {
+                {results.branded.length > 0 && show_branded && <Title>Branded</Title>}
+                {results.branded && show_branded &&
+                    results.branded.slice(0, 5).map((r, i) => {
                         return (
-                            <Item key={i} >
-                                <Thumbnail src={r.photo.thumb} />
-                                <Name>{r.food_name}</Name>
+                            <Item key={i} onClick={() => {handle_item_click(r)}}>
+                                <Item_Left>
+                                    <Thumbnail src={r.photo.thumb} />
+                                    <Name>{r.food_name}</Name>
+                                </Item_Left>
+                                <Item_Right>
+                                    {r.full_nutrients &&
+                                        <React.Fragment>
+                                            <Calories>{r.full_nutrients.find(a => a.attr_id == 208).value}</Calories>
+                                        </React.Fragment>
+                                    }
+                                </Item_Right>
                             </Item>
                         )
                     })
@@ -144,6 +157,7 @@ const Branded = styled.div``
 
 const Item = styled.div`
     display: flex;
+    width: 400px;
 `
 
 const Item_Left = styled.div`

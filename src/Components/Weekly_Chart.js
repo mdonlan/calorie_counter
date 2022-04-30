@@ -40,5 +40,7 @@ export function Weekly_Chart() {
     )
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+    padding: 25px;
+`
 const Title = styled.div``

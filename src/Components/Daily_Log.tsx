@@ -8,6 +8,8 @@ import { Edit_Log_Item } from './Edit_Log_Item';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RootState } from '../store';
 
+const meals = ["Breakfast", "Lunch", "Dinner", "Snacks"]; 
+
 export function Daily_Log() {
     const log_items = useSelector((state: RootState) => state.default.food_items_today);
     const [totals, set_totals] = useState({
@@ -41,10 +43,10 @@ export function Daily_Log() {
         }
 
         log_items.forEach(item => {
-            new_total.cals += item.calories;
-            new_total.carbs += item.carbs;
-            new_total.fat += item.fat;
-            new_total.protein += item.protein;
+            new_total.cals += item.calories_per_serving * item.servings;
+            new_total.carbs += item.carbs * item.servings;
+            new_total.fat += item.total_fat * item.servings;
+            new_total.protein += item.protein * item.servings;
         });
 
         set_totals(new_total);
@@ -64,6 +66,45 @@ export function Daily_Log() {
                 <Column_Title>Calories</Column_Title>
                 <Column_Title></Column_Title>
             </Column_Headers>
+            
+            {meals.map(meal_name => {
+               return (
+                    <Meal key={meal_name}>
+                        <Meal_Header>
+                            <Meal_Title>{meal_name}</Meal_Title>
+                            <Add_Food meal={meal_name}/>    
+                        </Meal_Header>
+                        <Meal_Items>
+                            {log_items.filter(item => item.meal == meal_name).map((filtered_item, i) => {
+                                return (
+                                    <Item key={i}>
+                                        <Text>{filtered_item.food_name}</Text>
+                                        <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
+                                        <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
+                                        <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
+                                    </Item>
+                                )
+                            })}
+                        </Meal_Items>
+                    </Meal>
+               )
+            })}
+
+            {is_editing_item &&
+                <Edit_Log_Item item={active_item} set_is_editing={set_is_editing_item}/>
+            }
+
+            <Totals>
+                <Total_Item>Calories: {Math.ceil(totals.cals)}</Total_Item>
+                <Total_Item>Carbs: {Math.ceil(totals.carbs)}</Total_Item>
+                <Total_Item>Fat: {Math.ceil(totals.fat)}</Total_Item>
+                <Total_Item>Protein: {Math.ceil(totals.protein)}</Total_Item>
+            </Totals>
+        </Wrapper>
+    )
+}
+
+/*
             <Meal_Header>
                 <Meal_Title>Breakfast</Meal_Title>
                 <Add_Food meal='breakfast'/>    
@@ -73,8 +114,7 @@ export function Daily_Log() {
                     return (
                         <Item key={i}>
                             <Text>{filtered_item.food_name}</Text>
-                            {/* <Text_Input onChange={() => {handle_qty_change(filtered_item)}} value={filtered_item.qty}></Text_Input> */}
-                            <Text>{filtered_item.servings}</Text>
+                            <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
                             <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
                             <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
                         </Item>
@@ -90,8 +130,7 @@ export function Daily_Log() {
                     return (
                         <Item key={i}>
                             <Text>{filtered_item.food_name}</Text>
-                            {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
-                            <Text>{filtered_item.servings}</Text>
+                            <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
                             <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
                             <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
                         </Item>
@@ -107,8 +146,7 @@ export function Daily_Log() {
                     return (
                         <Item key={i}>
                             <Text>{filtered_item.food_name}</Text>
-                            {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
-                            <Text>{filtered_item.servings}</Text>
+                            <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
                             <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
                             <Edit_Btn>
                                 <FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit} size="xs"/>
@@ -126,29 +164,14 @@ export function Daily_Log() {
                     return (
                         <Item key={i}>
                             <Text>{filtered_item.food_name}</Text>
-                            {/* <Text_Input value={filtered_item.qty}></Text_Input> */}
-                            <Text>{filtered_item.servings}</Text>
+                            <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
                             <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
                             <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
                         </Item>
                     )
                 })}
             </Meal_Items>
-
-            {is_editing_item &&
-                <Edit_Log_Item item={active_item} set_is_editing={set_is_editing_item}/>
-            }
-
-            <Totals>
-                <div>Totals</div>
-                <Total_Item>Calories: {totals.cals}</Total_Item>
-                <Total_Item>Carbs: {totals.carbs}</Total_Item>
-                <Total_Item>Fat: {totals.fat}</Total_Item>
-                <Total_Item>Protein: {totals.protein}</Total_Item>
-            </Totals>
-        </Wrapper>
-    )
-}
+*/
 
 const Wrapper = styled.div`
     color: ${props => props.theme.color};
@@ -159,6 +182,8 @@ const Wrapper = styled.div`
 `
 
 const Today_Date = styled.div``
+
+const Meal = styled.div``
 
 const Meal_Header = styled.div`
     display: flex;
@@ -197,7 +222,10 @@ const Item = styled.div`
 
 const Totals = styled.div`
     margin-top: 30px;
+    padding-top: 20px;
     border-top: 1px solid #dddddd;
+    display: flex;
+    justify-content: space-around;
 `
 
 const Total_Item = styled.div``

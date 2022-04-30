@@ -27,7 +27,7 @@ export interface Food {
     vitamin_c: number;
     calcium: number;
     iron: number;
-    
+    serving_unit: string;
 }
 
 // export interface User_Created_Food {
@@ -93,7 +93,8 @@ export function Add_Food(props) {
             vitamin_c: food.vitamin_c * servings,
             calcium: food.calcium * servings,
             iron: food.iron * servings,
-            meal:  props.meal
+            meal:  props.meal,
+            serving_unit: food.serving_unit
             // cals: food.full_nutrients.find(a => a.attr_id == 208).value,
             // meal: props.meal,
             // qty: qty,
