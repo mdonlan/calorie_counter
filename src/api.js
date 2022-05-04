@@ -290,3 +290,17 @@ export function check_for_token() {
     }
     return token;
 }
+
+export function get_recent_foods() {
+    // console.log("store_token: " + stored_token)
+    return superagent.post(`${host}/get_recent_foods`)
+    .send({"token": stored_token})
+    .set('accept', 'json')
+    .then(res => {
+        console.log(res.body);
+        return res.body
+    })
+    .catch(e => {
+        console.log(e);
+    })
+}

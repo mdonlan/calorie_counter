@@ -4,6 +4,7 @@ import { add_food_to_log, get_food_from_date } from '../../api';
 import { Search } from './Search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { Recent_Foods } from '../Recent_Foods';
 
 export interface Food {
     food_name: string;
@@ -54,11 +55,17 @@ export interface Food {
 //     iron: number;
 // }
 
+enum View {
+    SEARCH,
+    RECENT
+}
+
 export function Add_Food(props) {
     const [active, set_active] = useState<boolean>(false);
     const [food, set_food] = useState<Food | null>(null);
     const [servings, set_servings] = useState<number>(1);
 
+    const [view, set_view] = useState<View>(View.SEARCH);
     // useEffect(() => {
     // //    console.log("food: ", food);
     //     if (food.full_nutrients) { // using a nutritionix food
@@ -122,18 +129,27 @@ export function Add_Food(props) {
 
     return (
         <Wrapper>
-            <Add_Button onClick={() => {set_active(true)}} icon={faPlus} ></Add_Button>
+            <Add_Button onClick={() => {set_active(true)}} icon={faPlus} fixedWidth ></Add_Button>
 
             <Panel active={active}>
                 <Top>
-                    <Panel_Title>Add Food</Panel_Title>
+                    <Panel_Title>ADD FOOD</Panel_Title>
                     <Close_Btn onClick={() => {set_active(false)}}>X</Close_Btn>
                 </Top>
                 <Bottom>
                     {active && !food &&
-                        <div>
-                            <Search set_food={set_food}/>
-                        </div>
+                        <React.Fragment>
+                            <View_Buttons>
+                                <View_Button onClick={() => set_view(View.SEARCH)}>search</View_Button>
+                                <View_Button onClick={() => set_view(View.RECENT)}>recent</View_Button>
+                            </View_Buttons>
+                            {view == View.SEARCH &&
+                                <Search set_food={set_food}/>
+                            }
+                            {view == View.RECENT &&
+                                 <Recent_Foods />
+                            }
+                        </React.Fragment>
                     }
                     {active && food &&
                         <Selected_Food>
@@ -205,6 +221,13 @@ const Right = styled.div``
 
 const Add_Button = styled(FontAwesomeIcon)`
     cursor: pointer;
+    background: ${props => props.theme.background_2};
+    border-radius: 50%;
+    padding: 1px;
+    padding-bottom: 2px;
+    :hover {
+        background: ${props => props.theme.dp3};
+    }
 `
 
 const Close_Btn = styled.div`
@@ -222,7 +245,10 @@ const Thumbnail = styled.img`
     height: 50px;
 `
 
-const Panel_Title = styled.div``
+const Panel_Title = styled.div`
+    margin: 5px;
+    font-weight: bold;
+`
 
 const Top = styled.div`
     display: flex;
@@ -234,7 +260,8 @@ const Bottom = styled.div`
     height: calc(100% - 10px - 25px); // 10px for padding, rest for top size
     padding: 5px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* justify-content: center; */
 `
 
 
@@ -268,3 +295,19 @@ const Buttons = styled.div`
 `
 
 const Selected_Food = styled.div``
+
+const View_Buttons = styled.div`
+    display: flex;
+`
+
+const View_Button = styled.div`
+    background: ${props => props.theme.dp3};
+    padding: 5px;
+    border-radius: 3px;
+    margin: 5px;
+    cursor: pointer;
+
+    :hover {
+        background: ${props => props.theme.dp5};
+    }
+`

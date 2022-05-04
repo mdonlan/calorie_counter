@@ -8,7 +8,8 @@ const default_slice = createSlice({
         logged_in: false,
         username: null,
         food_items_today: [],
-        add_food_selection: null
+        add_food_selection: null,
+        recent_foods: []
     },
     reducers: {
         set_logged_in: (state, action) => {
@@ -25,6 +26,10 @@ const default_slice = createSlice({
 
         set_add_food_selection: (state, action) => {
             state.add_food_selection = action.payload;
+        },
+
+        set_recent_foods: (state, action) => {
+            state.recent_foods = action.payload;
         }
     }
 });

@@ -111,7 +111,7 @@ export function Search_Results_Nutritionix(props) {
 
                 {results.branded.length > 0 && show_branded && <Title>Branded</Title>}
                 {results.branded && show_branded &&
-                    results.branded.slice(0, 5).map((r, i) => {
+                    results.branded.slice(0, 5).    map((r, i) => {
                         return (
                             <Item key={i} onClick={() => {handle_item_click(r)}}>
                                 <Item_Left>
