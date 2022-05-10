@@ -1,17 +1,22 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Daily_Log } from './Daily_Log'
 
 export function Home() {
 
     return(
-        <div>
-            <React.Fragment>
+        <Wrapper>
+            {/* <React.Fragment> */}
                 <Daily_Log />
                 {/* <Weekly_Chart /> */}
-            </React.Fragment>
+            {/* </React.Fragment> */}
             {/* <Search /> */}
             
             {/* <Add_Food /> */}
-        </div>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled.div`
+    overflow: auto;
+`

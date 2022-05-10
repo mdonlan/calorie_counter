@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { search_foods_nutritionix } from '../../api.js'
+import { search_food } from '../../api.js'
 import styled from 'styled-components'
 import { Food } from './Add_Food'
 
@@ -19,8 +19,9 @@ export function Search_Results_Nutritionix(props) {
     
     useEffect(() => {
         if (props.query.length > 0) {
-            search_foods_nutritionix(props.query)
+             search_food(props.query)
             .then(async res => {
+                console.log(res)
                 set_results(res.data);
             })
         }
@@ -116,7 +117,7 @@ export function Search_Results_Nutritionix(props) {
 
                 {results.branded.length > 0 && show_branded && <Title>Branded</Title>}
                 {results.branded && show_branded &&
-                    results.branded.slice(0, 5).    map((r, i) => {
+                    results.branded.slice(0, branded_show_count).    map((r, i) => {
                         return (
                             <Item key={i} onClick={() => {handle_item_click(r)}}>
                                 <Item_Left>
@@ -157,6 +158,9 @@ const Results = styled.div`
     max-height: 300px;
     overflow-y: auto;
     background: #252525;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
 
@@ -165,17 +169,25 @@ const Branded = styled.div``
 
 const Item = styled.div`
     display: flex;
-    width: 400px;
+    width: 90%;
+    cursor: pointer;
+    margin-bottom: 8px;
+
+    :hover {
+        background: ${props => props.theme.dp5};
+    }
 `
 
 const Item_Left = styled.div`
     display: flex;
+    align-items: center;
     width: 50%;
 `
 
 const Item_Right = styled.div`
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     width: 50%;
 `
 
@@ -184,8 +196,14 @@ const Thumbnail = styled.img`
     height: 50px;
 `
 
-const Name = styled.div``
-const Calories = styled.div``
+const Name = styled.div`
+    font-size: 16px;
+    margin-left: 25px;
+`
+const Calories = styled.div`
+    font-size: 16px;
+    padding-right: 8px;
+`
 
 const Filters = styled.div`
     display: flex;

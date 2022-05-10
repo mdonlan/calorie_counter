@@ -106,7 +106,9 @@ export function Daily_Log() {
 
 const Wrapper = styled.div`
     color: ${props => props.theme.color};
-    margin: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
     padding: 20px;
     width: 600px;
     background: ${props => props.theme.dp1};

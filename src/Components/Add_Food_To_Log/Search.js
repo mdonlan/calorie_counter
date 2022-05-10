@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { search_foods, get_food_details } from '../../api.js'
+import { search_foods } from '../../api.js'
 import styled from 'styled-components'
 import { Search_Results_Nutritionix } from './Search_Results_Nutritionix';
-import { Search_Results_User_Created } from './Search_Results_User_Created';
+// import { Search_Results_User_Created } from './Search_Results_User_Created';
 // import { Food } from '../Food.js';
 
 export function Search(props) {

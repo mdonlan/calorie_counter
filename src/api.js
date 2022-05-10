@@ -6,61 +6,72 @@ let stored_token = null;
 const host = 'http://192.168.0.224:3000'; // for dev purposes, allows access on different computers on same network
 // const host = 'http://localhost:3000';
 
-// search the nutritionix api for matching foods
-// returns two arrays, branded and common
-export function search_foods_nutritionix(query) {
-    return axios.get(`https://trackapi.nutritionix.com/v2/search/instant?query=${query}&detailed=true`, {
-        headers: {
-            "x-app-id": "19cbe08c",
-            "x-app-key": "8dffdef9be5f87ff5ce316816ca87b0a"
-        }
+// // search the nutritionix api for matching foods
+// // returns two arrays, branded and common
+// export function search_food(query) {
+//     return axios.get(`https://trackapi.nutritionix.com/v2/search/instant?query=${query}&detailed=true`, {
+//         headers: {
+//             "x-app-id": "19cbe08c",
+//             "x-app-key": "8dffdef9be5f87ff5ce316816ca87b0a"
+//         }
+//     })
+//     .then(res => {
+//         console.log(res.data);
+//         return res;
+//     })
+//     .catch(e => {
+//         console.log(e);
+//     })
+// }
+
+// search the nutritionix db for foods based on a query
+export function search_food(query) {
+    return axios.post(`${host}/search_foods_nutritionix`, {
+        headers: { "Authorization" : `Bearer ${stored_token}` }, 
+        "query": query
     })
-    .then(res => {
-        console.log(res.data);
-        return res;
-    })
-    .catch(e => {
-        console.log(e);
-    })
+    .then(res => { return res; })
+    .catch(e => { console.log(e); })
 }
 
-export function search_foods_user_created(query) {
-    console.log('search_food_user_created')
-    return axios.get(`${host}/search_foods_user_created?query=${query}`, {
-        headers: {
-            "Authorization" : `Bearer ${stored_token}`
-        }
-    })
-    .then(res => {
-        console.log(res.data);
-        return res;
-    })
-    .catch(e => {
-        console.log(e);
-    })
-}
+// export function search_foods_user_created(query) {
+//     console.log('search_food_user_created')
+//     return axios.get(`${host}/search_foods_user_created?query=${query}`, {
+//         headers: {
+//             "Authorization" : `Bearer ${stored_token}`
+//         }
+//     })
+//     .then(res => {
+//         console.log(res.data);
+//         return res;
+//     })
+//     .catch(e => {
+//         console.log(e);
+//     })
+// }
 
-// get nutrient info for a specific item
-export function get_item(query) {
-    return axios({
-        method: "POST",
-        url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
-        headers: {
-            "x-app-id": "19cbe08c",
-            "x-app-key": "8dffdef9be5f87ff5ce316816ca87b0a"
-        },
-        data: {
-            "query": query,
-        }
-    })
-    .then(res => {
-        // console.log(res);
-        return res;
-    })
-    .catch(e => {
-        console.log(e);
-    })
-}
+// // get nutrient info for a specific item
+// export function get_nutrients_for_food(query) {
+//     return axios({
+//         method: "POST",
+//         url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
+//         headers: {
+//             "x-app-id": "19cbe08c",
+//             "x-app-key": "8dffdef9be5f87ff5ce316816ca87b0a",
+//             "x-remote-user-id": 0,
+//         },
+//         data: {
+//             "query": query,
+//         }
+//     })
+//     .then(res => {
+//         console.log("get_nutrients_for_food: ", res);
+//         // return res;
+//     })
+//     .catch(e => {
+//         console.log(e);
+//     })
+// }
 
 export function get_data_from_db(query) {
     return axios.get(`${host}`)
@@ -102,6 +113,7 @@ export function add_food_to_log(new_food) {
     })
     .then(res => {
         // console.log(res);
+        get_nutrients_for_food(new_food.food_name);
     })
     .catch(e => {
         console.log(e);
@@ -170,40 +182,40 @@ export function validate_token(token) {
     })
 }
 
-// get food details for an array of foods
-export async function get_food_details(foods) {
-    // const foods = ['pizza', 'pasta', 'tacos'];
+// // get food details for an array of foods
+// export async function get_food_details(foods) {
+//     // const foods = ['pizza', 'pasta', 'tacos'];
 
-    const results = [];
+//     const results = [];
 
-    for (let i = 0; i < foods.length; i++) {
-        const details = await get_details(foods[i]);
-        results.push(details.data.foods[0]);
-        // console.log(details.data.foods[0].food_name)
-        // console.log(details.data.foods[0].nf_calories)
-    }
+//     for (let i = 0; i < foods.length; i++) {
+//         const details = await get_details(foods[i]);
+//         results.push(details.data.foods[0]);
+//         // console.log(details.data.foods[0].food_name)
+//         // console.log(details.data.foods[0].nf_calories)
+//     }
 
-    return results;
-}
+//     return results;
+// }
 
-async function get_details(query) {
-    return axios({
-        method: "POST",
-        url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
-        headers: {
-            "x-app-id": "19cbe08c",
-            "x-app-key": "8dffdef9be5f87ff5ce316816ca87b0a"
-        },
-        data: { "query": query }
-    })
-    .then(res => {
-        // console.log(res);
-        return res;
-    })
-    .catch(e => {
-        console.log(e);
-    })
-}
+// async function get_details(query) {
+//     return axios({
+//         method: "POST",
+//         url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
+//         headers: {
+//             "x-app-id": "19cbe08c",
+//             "x-app-key": "8dffdef9be5f87ff5ce316816ca87b0a"
+//         },
+//         data: { "query": query }
+//     })
+//     .then(res => {
+//         // console.log(res);
+//         return res;
+//     })
+//     .catch(e => {
+//         console.log(e);
+//     })
+// }
 
 export function update_log_item_qty(item, qty) {
     const token = localStorage.getItem("token");

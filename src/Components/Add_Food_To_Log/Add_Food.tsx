@@ -176,6 +176,7 @@ const Panel = styled.div<{ active: boolean }>`
     top: calc(25%);
     left: calc(25%);
     border: 1px solid #dddddd;
+    overflow-y: auto;
 `
 
 

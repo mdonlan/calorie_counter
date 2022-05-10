@@ -5,7 +5,7 @@ import {
     Route,
     Link
   } from "react-router-dom";
-import { get_data_from_db, get_item } from '../api'
+import { get_data_from_db } from '../api'
 import styled from 'styled-components'
 // import { Search } from './Search'
 // import { Log } from './Daily_Log'
