@@ -72,8 +72,11 @@ export function get_data_from_db(query) {
     })
 }
 
-export function get_food_from_date() {
-    return axios.get(`${host}/get_food_from_date?date=${new Date().toISOString()}`)
+export function get_food_from_today() {
+    // const today = new Date();
+    // console.log("today: ", today);
+    // console.log("today date string: ", today.toDateString())
+    return axios.get(`${host}/get_food_from_today`)
     .then(res => {
         // console.log(res);
         store.dispatch(set_food_items_today(res.data.rows));
@@ -116,6 +119,7 @@ export function add_food_to_log(new_food) {
 export function delete_food_from_log(food) {
     // how to find which food to delete from db?
     // should each food entered have a unique id?
+    console.log("deleting food")
     return axios({
         method: "POST",
         url: `${host}/delete_food_from_log`,
@@ -220,7 +224,7 @@ export function update_log_item_qty(item, qty) {
     .then(res => {
         // console.log(res);
         // after we update an item, get the new data from db to show user
-        get_food_from_date();
+        get_food_from_today();
         return res;
     })
     .catch(e => {

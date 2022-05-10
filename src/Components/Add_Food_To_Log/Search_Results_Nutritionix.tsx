@@ -14,6 +14,8 @@ export function Search_Results_Nutritionix(props) {
     const history = useHistory();
     const [show_common, set_show_common] = useState(true);
     const [show_branded, set_show_branded] = useState(true);
+    const [common_show_count, set_common_show_count] = useState<number>(5);
+    const [branded_show_count, set_branded_show_count] = useState<number>(5);
     
     useEffect(() => {
         if (props.query.length > 0) {
@@ -41,9 +43,9 @@ export function Search_Results_Nutritionix(props) {
 
         const new_food: Food = {
             food_name: food.food_name,
-            cals_per_serving: get_nutrient(food, 208),
+            calories_per_serving: get_nutrient(food, 208),
             servings: 1,
-            serving_size: food.serving_unit,
+            // serving_size: food.serving_unit,
             carbs: get_nutrient(food, 205),
             protein: get_nutrient(food, 203),
             total_fat: get_nutrient(food, 204),
@@ -90,7 +92,7 @@ export function Search_Results_Nutritionix(props) {
             <Results>
                 {results.common.length > 0 && show_common && <Title>Common</Title>}
                 {results.common && show_common &&
-                    results.common.slice(0, 5).map((r, i) => {
+                    results.common.slice(0, common_show_count).map((r, i) => {
                         return (
                             <Item key={i} onClick={() => {handle_item_click(r)}}>
                                 <Item_Left>
@@ -107,6 +109,9 @@ export function Search_Results_Nutritionix(props) {
                             </Item>
                         )
                     })
+                }
+                {results.common.length > 0 && show_common &&
+                    <Show_More_Btn onClick={() => {set_common_show_count(common_show_count + 5)}}>Show More</Show_More_Btn>
                 }
 
                 {results.branded.length > 0 && show_branded && <Title>Branded</Title>}
@@ -128,6 +133,9 @@ export function Search_Results_Nutritionix(props) {
                             </Item>
                         )
                     })
+                }
+                {results.branded.length > 0 && show_branded &&
+                    <Show_More_Btn onClick={() => {set_branded_show_count(branded_show_count + 5)}}>Show More</Show_More_Btn>
                 }
             </Results>
         </Wrapper>
@@ -195,5 +203,18 @@ const Filter_Item = styled.div`
 
     :hover {
         background: #343434;
+    }
+`
+
+const Show_More_Btn = styled.div`
+    background: ${props => props.theme.dp2};
+    text-align: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    cursor: pointer;
+    :hover {
+        background: ${props => props.theme.dp5};
     }
 `

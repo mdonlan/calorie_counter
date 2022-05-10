@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { add_food_to_log, get_food_from_date } from '../../api';
+import { add_food_to_log, get_food_from_today } from '../../api';
 import { Search } from './Search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -8,10 +8,10 @@ import { Recent_Foods } from '../Recent_Foods';
 
 export interface Food {
     food_name: string;
-    cals_per_serving: number;
+    calories_per_serving: number;
     servings: number;
     meal: string; 
-    serving_size: number;
+    // serving_size: number;
     carbs: number;
     protein: number;
     total_fat: number;
@@ -31,30 +31,6 @@ export interface Food {
     serving_unit: string;
 }
 
-// export interface User_Created_Food {
-//     name: string;
-//     cals_per_serving: number;
-//     servings: number;
-//     meal: string; 
-//     serving_size: number;
-//     carbs: number;
-//     protein: number;
-//     total_fat: number;
-//     trans_fat: number;
-//     sat_fat: number;
-//     poly_fat: number;
-//     mono_fat: number;
-//     cholesterol: number;
-//     sodium: number;
-//     potassium: number;
-//     fiber: number;
-//     sugar: number;
-//     vitamin_a: number;
-//     vitamin_c: number;
-//     calcium: number;
-//     iron: number;
-// }
-
 enum View {
     SEARCH,
     RECENT
@@ -64,26 +40,23 @@ export function Add_Food(props) {
     const [active, set_active] = useState<boolean>(false);
     const [food, set_food] = useState<Food | null>(null);
     const [servings, set_servings] = useState<number>(1);
-
     const [view, set_view] = useState<View>(View.SEARCH);
-    // useEffect(() => {
-    // //    console.log("food: ", food);
-    //     if (food.full_nutrients) { // using a nutritionix food
-    //         convert_nutritionix_food(food);
-    //     }
-    // }, [food]);
+    
+    useEffect(() => {
+        const close = e => {
+            if (e.keyCode === 27) handle_close()
+        }
+        window.addEventListener('keydown', close)
+      return () => window.removeEventListener('keydown', close)
+    },[])
 
-
-    async function handle_confirm() {
-        
+    async function handle_confirm() {        
         console.log(food)
-        
-
         const new_food: Food = {
             food_name: food.food_name,
-            cals_per_serving: food.cals_per_serving,
+            calories_per_serving: food.calories_per_serving,
             servings: servings,
-            serving_size: food.serving_size,
+            // serving_size: food.serving_size,
             carbs: food.carbs * servings,
             protein: food.protein * servings,
             total_fat: food.total_fat * servings,
@@ -102,20 +75,13 @@ export function Add_Food(props) {
             iron: food.iron * servings,
             meal:  props.meal,
             serving_unit: food.serving_unit
-            // cals: food.full_nutrients.find(a => a.attr_id == 208).value,
-            // meal: props.meal,
-            // qty: qty,
-            // fat: food.full_nutrients.find(a => a.attr_id == 204).value,
-            // carbs: food.full_nutrients.find(a => a.attr_id == 205).value,
-            // protein: food.full_nutrients.find(a => a.attr_id == 203).value
         }
 
         console.log("new_food: ", new_food)
 
         await add_food_to_log(new_food);
-        set_active(false);
         set_food(null);
-        get_food_from_date();
+        get_food_from_today();
     }
 
     function handle_close() {
@@ -147,38 +113,40 @@ export function Add_Food(props) {
                                 <Search set_food={set_food}/>
                             }
                             {view == View.RECENT &&
-                                 <Recent_Foods />
+                                 <Recent_Foods set_food={set_food}/>
                             }
                         </React.Fragment>
                     }
                     {active && food &&
                         <Selected_Food>
-                            <div>name: {food.food_name}</div>
-                            <input onChange={handle_servings} value={servings}/>
+                            <Food_Name>{food.food_name}</Food_Name>
+                            <Servings>
+                                <div>Servings: </div>
+                                <Servings_Input onChange={handle_servings} value={servings}/>
+                            </Servings>
                             <Food_Details>
-                                
                                 <Left>
-                                    <div>Cals {food.cals_per_serving * servings}</div>
-                                    <div>Calories Per Serving {food.cals_per_serving}</div>
-                                    <div>Serving Size {food.serving_size}</div>
-                                    <div>Carbs {food.carbs * servings}</div>
-                                    <div>Protein {food.protein * servings}</div>
-                                    <div>Total Fat {food.total_fat * servings}</div>
-                                    <div>Trans Fat {food.trans_fat * servings}</div>
-                                    <div>Sat Fat {food.sat_fat * servings}</div>
-                                    <div>Poly Fat {food.poly_fat * servings}</div>
-                                    <div>Mono Fat {food.mono_fat * servings}</div>
+                                    <div>Cals: {(food.calories_per_serving * servings).toFixed()}</div>
+                                    <div>Calories Per Serving: {(food.calories_per_serving).toFixed()}</div>
+                                    <div>Serving Size: {food.serving_unit}</div>
+                                    <div>Carbs: {(food.carbs * servings).toFixed()}</div>
+                                    <div>Protein: {(food.protein * servings).toFixed()}</div>
+                                    <div>Total Fat: {(food.total_fat * servings).toFixed()}</div>
+                                    <div>Trans Fat: {(food.trans_fat * servings).toFixed()}</div>
+                                    <div>Sat Fat: {(food.sat_fat * servings).toFixed()}</div>
+                                    <div>Poly Fat: {(food.poly_fat * servings).toFixed()}</div>
+                                    <div>Mono Fat: {(food.mono_fat * servings).toFixed()}</div>
                                 </Left>
                                 <Right>
-                                    <div>Cholesterol {food.cholesterol * servings}</div>
-                                    <div>Sodium {food.sodium * servings}</div>
-                                    <div>Potassium {food.potassium * servings}</div>
-                                    <div>Fiber {food.fiber * servings}</div>
-                                    <div>Sugar {food.sugar * servings}</div>
-                                    <div>Vitamin A {food.vitamin_a * servings}</div>
-                                    <div>Vitamin C {food.vitamin_c * servings}</div>
-                                    <div>Calcium {food.calcium * servings}</div>
-                                    <div>Iron {food.iron * servings}</div>
+                                    <div>Cholesterol: {(food.cholesterol * servings).toFixed()}</div>
+                                    <div>Sodium: {(food.sodium * servings).toFixed()}</div>
+                                    <div>Potassium: {(food.potassium * servings).toFixed()}</div>
+                                    <div>Fiber: {(food.fiber * servings).toFixed()}</div>
+                                    <div>Sugar: {(food.sugar * servings).toFixed()}</div>
+                                    <div>Vitamin A: {(food.vitamin_a * servings).toFixed()}</div>
+                                    <div>Vitamin C: {(food.vitamin_c * servings).toFixed()}</div>
+                                    <div>Calcium: {(food.calcium * servings).toFixed()}</div>
+                                    <div>Iron: {(food.iron * servings).toFixed()}</div>
                                 </Right>
                                 
                                 
@@ -213,11 +181,20 @@ const Panel = styled.div<{ active: boolean }>`
 
 const Food_Details = styled.div`
     display: flex;
+    justify-content: center;
 `
 
 
-const Left = styled.div``
-const Right = styled.div``
+const Left = styled.div`
+    width: 30%;
+    margin-right: 10px;
+    /* background: blue; */
+    /* padding-left: 10%; */
+`
+const Right = styled.div`
+    width: 30%;
+    /* background: red; */
+`
 
 const Add_Button = styled(FontAwesomeIcon)`
     cursor: pointer;
@@ -248,13 +225,15 @@ const Thumbnail = styled.img`
 const Panel_Title = styled.div`
     margin: 5px;
     font-weight: bold;
+    width: 95%;
+    /* background: red; */
+    text-align: center;
 `
 
 const Top = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 5px;
-    height: 15px;
 `
 const Bottom = styled.div`
     height: calc(100% - 10px - 25px); // 10px for padding, rest for top size
@@ -292,6 +271,7 @@ const Cancel_Button = styled.div`
 const Buttons = styled.div`
     display: flex;
     justify-content: space-around;
+    margin-top: 20px;
 `
 
 const Selected_Food = styled.div``
@@ -310,4 +290,26 @@ const View_Button = styled.div`
     :hover {
         background: ${props => props.theme.dp5};
     }
+`
+
+const Servings = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+`
+
+const Food_Name = styled.div`
+    font-size: 24px;
+    text-align: center;
+    padding: 8px;
+`
+
+const Servings_Input = styled.input`
+    background: ${props => props.theme.dp5};
+    border: none;
+    width: 30px;
+    margin-left: 3px;
+    text-align: center;
+    padding: none;
+    border-radius: 3px;
 `

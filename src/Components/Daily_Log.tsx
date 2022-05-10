@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { get_data_from_db, get_food_details, get_food_from_date } from '../api'
+import { get_data_from_db, get_food_details, get_food_from_today } from '../api'
 import { Add_Food } from './Add_Food_To_Log/Add_Food';
 import { Edit_Log_Item } from './Edit_Log_Item';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +25,7 @@ export function Daily_Log() {
 
     useEffect(() => {
         const fetch_foods = async () => {
-            await get_food_from_date();
+            await get_food_from_today();
             // const results = await get_food_from_date();
             // set_log_items(results);
             get_totals();
@@ -80,7 +80,7 @@ export function Daily_Log() {
                                     <Item key={i}>
                                         <Text>{filtered_item.food_name}</Text>
                                         <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
-                                        <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
+                                        <Text>{Math.round(filtered_item.calories_per_serving * filtered_item.servings)}</Text>
                                         <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
                                     </Item>
                                 )
@@ -104,81 +104,13 @@ export function Daily_Log() {
     )
 }
 
-/*
-            <Meal_Header>
-                <Meal_Title>Breakfast</Meal_Title>
-                <Add_Food meal='breakfast'/>    
-            </Meal_Header>
-            <Meal_Items>
-                {log_items.filter(item => item.meal == 'breakfast').map((filtered_item, i) => {
-                    return (
-                        <Item key={i}>
-                            <Text>{filtered_item.food_name}</Text>
-                            <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
-                            <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
-                            <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
-                        </Item>
-                    )
-                })}
-            </Meal_Items>
-            <Meal_Header>
-                <Meal_Title>Lunch</Meal_Title>
-                <Add_Food meal='lunch'/>
-            </Meal_Header>
-            <Meal_Items>
-                {log_items.filter(item => item.meal == 'lunch').map((filtered_item, i) => {
-                    return (
-                        <Item key={i}>
-                            <Text>{filtered_item.food_name}</Text>
-                            <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
-                            <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
-                            <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
-                        </Item>
-                    )
-                })}
-            </Meal_Items>
-            <Meal_Header>
-                <Meal_Title>Dinner</Meal_Title>
-                <Add_Food meal='dinner'/>
-            </Meal_Header>
-            <Meal_Items>
-                {log_items.filter(item => item.meal == 'dinner').map((filtered_item, i) => {
-                    return (
-                        <Item key={i}>
-                            <Text>{filtered_item.food_name}</Text>
-                            <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
-                            <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
-                            <Edit_Btn>
-                                <FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit} size="xs"/>
-                            </Edit_Btn>
-                        </Item>
-                    )
-                })}
-            </Meal_Items>
-            <Meal_Header>
-                <Meal_Title>Snacks</Meal_Title>
-                <Add_Food meal='snacks'/>
-            </Meal_Header>
-            <Meal_Items>
-                {log_items.filter(item => item.meal == 'snacks').map((filtered_item, i) => {
-                    return (
-                        <Item key={i}>
-                            <Text>{filtered_item.food_name}</Text>
-                            <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
-                            <Text>{filtered_item.calories_per_serving * filtered_item.servings}</Text>
-                            <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
-                        </Item>
-                    )
-                })}
-            </Meal_Items>
-*/
-
 const Wrapper = styled.div`
     color: ${props => props.theme.color};
     margin: 20px;
     padding: 20px;
     width: 600px;
     background: ${props => props.theme.dp1};
+    border-radius: 8px;
 `
 
 const Today_Date = styled.div``
@@ -206,8 +138,8 @@ const Meal_Items = styled.div`
 `
 
 const Edit_Btn = styled.div`
-    width: 12px;
-    height: 12px;
+    /* width: 12px; */
+    /* height: 12px; */
     color: ${props => props.theme.color_offset4};
 `
 
@@ -217,7 +149,11 @@ const Item = styled.div`
     width: 90%;
     background: ${props => props.theme.dp1};
     margin-top: 12px;
-    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 4px;
 `
 
 const Totals = styled.div`

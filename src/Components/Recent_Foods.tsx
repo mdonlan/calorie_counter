@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { get_recent_foods } from '../api';
 
-export function Recent_Foods() {
+export function Recent_Foods(props) {
     const [recent_foods, set_recent_foods] = useState([]);
 
     
@@ -23,7 +23,10 @@ export function Recent_Foods() {
             {recent_foods &&
                 recent_foods.map(food => {
                     return (
-                        <div>{food.food_name}</div>
+                       <Food_Item key={food.transaction_id} onClick={() => {props.set_food(food)}}>
+                            <Food_Name>{food.food_name}</Food_Name>
+                            <Food_Cals>{food.calories_per_serving}</Food_Cals>
+                       </Food_Item>
                     )
                 })
             }
@@ -32,5 +35,22 @@ export function Recent_Foods() {
 }
 
 const Wrapper = styled.div`
-    background: blue;
+    /* background: blue; */
 `
+
+const Food_Item = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: ${props => props.theme.dp2};
+    margin-bottom: 3px;
+
+    :hover {
+        background: ${props => props.theme.dp4};
+    }
+`
+
+const Food_Name = styled.div``
+const Food_Cals = styled.div``

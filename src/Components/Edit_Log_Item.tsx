@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { delete_food_from_log, update_log_item_qty } from '../api'
+import { delete_food_from_log, update_log_item_qty, get_food_from_today } from '../api'
 
 export function Edit_Log_Item(props) {
 
@@ -15,6 +15,16 @@ export function Edit_Log_Item(props) {
         props.set_is_editing(false);
     }
 
+    async function handle_delete() {
+        await delete_food_from_log(props.item);
+        get_food_from_today();
+        handle_cancel();
+    }
+
+    function handle_cancel() {
+        props.set_is_editing(false)
+    }
+
     return (
         <Wrapper>
             <Food_Name>{props.item.food_name}</Food_Name>
@@ -24,9 +34,9 @@ export function Edit_Log_Item(props) {
             </Servings>
             <Options>
                 <div onClick={() => {handle_save()}}>save</div>
-                <div onClick={() => {props.set_is_editing(false)}}>cancel</div>
+                <div onClick={handle_cancel}>cancel</div>
             </Options>
-            <Delete onClick={() => {delete_food_from_log(props.item)}}>delete</Delete>
+            <Delete onClick={handle_delete}>delete</Delete>
         </Wrapper>
     )
 }
