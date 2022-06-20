@@ -5,31 +5,7 @@ import { Search } from './Search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Recent_Foods } from '../Recent_Foods';
-
-export interface Food {
-    food_name: string;
-    calories_per_serving: number;
-    servings: number;
-    meal: string; 
-    // serving_size: number;
-    carbs: number;
-    protein: number;
-    total_fat: number;
-    trans_fat: number;
-    sat_fat: number;
-    poly_fat: number;
-    mono_fat: number;
-    cholesterol: number;
-    sodium: number;
-    potassium: number;
-    fiber: number;
-    sugar: number;
-    vitamin_a: number;
-    vitamin_c: number;
-    calcium: number;
-    iron: number;
-    serving_unit: string;
-}
+import { Food, Alt_Measure } from '../../Types'
 
 enum View {
     SEARCH,
@@ -41,6 +17,7 @@ export function Add_Food(props) {
     const [food, set_food] = useState<Food | null>(null);
     const [servings, set_servings] = useState<number>(1);
     const [view, set_view] = useState<View>(View.SEARCH);
+    const [show_details, set_show_details] = useState<boolean>(false);
     
     useEffect(() => {
         const close = e => {
@@ -74,7 +51,8 @@ export function Add_Food(props) {
             calcium: food.calcium * servings,
             iron: food.iron * servings,
             meal:  props.meal,
-            serving_unit: food.serving_unit
+            serving_unit: food.serving_unit,
+            alt_measures: []
         }
 
         console.log("new_food: ", new_food)
@@ -123,35 +101,46 @@ export function Add_Food(props) {
                             <Servings>
                                 <div>Servings: </div>
                                 <Servings_Input onChange={handle_servings} value={servings}/>
+                                <div>Serving Size: {food.serving_unit}</div>
+                               
+                                <select name="" id="">
+                                    {food.alt_measures && food.alt_measures.map(alt => {
+                                        return (
+                                            <option key={alt.measure}>{alt.measure}</option>
+                                        )
+                                    })}
+                                </select>
                             </Servings>
-                            <Food_Details>
-                                <Left>
-                                    <div>Cals: {(food.calories_per_serving * servings).toFixed()}</div>
-                                    <div>Calories Per Serving: {(food.calories_per_serving).toFixed()}</div>
-                                    <div>Serving Size: {food.serving_unit}</div>
-                                    <div>Carbs: {(food.carbs * servings).toFixed()}</div>
-                                    <div>Protein: {(food.protein * servings).toFixed()}</div>
-                                    <div>Total Fat: {(food.total_fat * servings).toFixed()}</div>
-                                    <div>Trans Fat: {(food.trans_fat * servings).toFixed()}</div>
-                                    <div>Sat Fat: {(food.sat_fat * servings).toFixed()}</div>
-                                    <div>Poly Fat: {(food.poly_fat * servings).toFixed()}</div>
-                                    <div>Mono Fat: {(food.mono_fat * servings).toFixed()}</div>
-                                </Left>
-                                <Right>
-                                    <div>Cholesterol: {(food.cholesterol * servings).toFixed()}</div>
-                                    <div>Sodium: {(food.sodium * servings).toFixed()}</div>
-                                    <div>Potassium: {(food.potassium * servings).toFixed()}</div>
-                                    <div>Fiber: {(food.fiber * servings).toFixed()}</div>
-                                    <div>Sugar: {(food.sugar * servings).toFixed()}</div>
-                                    <div>Vitamin A: {(food.vitamin_a * servings).toFixed()}</div>
-                                    <div>Vitamin C: {(food.vitamin_c * servings).toFixed()}</div>
-                                    <div>Calcium: {(food.calcium * servings).toFixed()}</div>
-                                    <div>Iron: {(food.iron * servings).toFixed()}</div>
-                                </Right>
-                                
-                                
-                                {/* <Thumbnail src={food.photo.thumb} /> */}
-                            </Food_Details>
+                            {show_details &&
+                                <Food_Details>
+                                    <Left>
+                                        <div>Cals: {(food.calories_per_serving * servings).toFixed()}</div>
+                                        <div>Calories Per Serving: {(food.calories_per_serving).toFixed()}</div>
+                                        
+                                        <div>Carbs: {(food.carbs * servings).toFixed()}</div>
+                                        <div>Protein: {(food.protein * servings).toFixed()}</div>
+                                        <div>Total Fat: {(food.total_fat * servings).toFixed()}</div>
+                                        <div>Trans Fat: {(food.trans_fat * servings).toFixed()}</div>
+                                        <div>Sat Fat: {(food.sat_fat * servings).toFixed()}</div>
+                                        <div>Poly Fat: {(food.poly_fat * servings).toFixed()}</div>
+                                        <div>Mono Fat: {(food.mono_fat * servings).toFixed()}</div>
+                                    </Left>
+                                    <Right>
+                                        <div>Cholesterol: {(food.cholesterol * servings).toFixed()}</div>
+                                        <div>Sodium: {(food.sodium * servings).toFixed()}</div>
+                                        <div>Potassium: {(food.potassium * servings).toFixed()}</div>
+                                        <div>Fiber: {(food.fiber * servings).toFixed()}</div>
+                                        <div>Sugar: {(food.sugar * servings).toFixed()}</div>
+                                        <div>Vitamin A: {(food.vitamin_a * servings).toFixed()}</div>
+                                        <div>Vitamin C: {(food.vitamin_c * servings).toFixed()}</div>
+                                        <div>Calcium: {(food.calcium * servings).toFixed()}</div>
+                                        <div>Iron: {(food.iron * servings).toFixed()}</div>
+                                    </Right>
+                                    
+                                    
+                                    {/* <Thumbnail src={food.photo.thumb} /> */}
+                                </Food_Details>
+                            }
                             <Buttons>
                                 <Confirm_Button onClick={handle_confirm}>Confirm</Confirm_Button>
                                 <Cancel_Button onClick={handle_close}>Cancel</Cancel_Button>

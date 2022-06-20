@@ -1,13 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Daily_Calorie_Bar } from './Daily_Calories_Bar'
 import { Daily_Log } from './Daily_Log'
+import { Weight } from './Weight'
 
 export function Home() {
 
     return(
         <Wrapper>
             {/* <React.Fragment> */}
-                <Daily_Log />
+                <Main_Content>
+                    <Daily_Log />
+                </Main_Content>
+                <Right>
+                    <Weight />
+                    <Daily_Calorie_Bar />
+                </Right>
                 {/* <Weekly_Chart /> */}
             {/* </React.Fragment> */}
             {/* <Search /> */}
@@ -19,4 +27,10 @@ export function Home() {
 
 const Wrapper = styled.div`
     overflow: auto;
+    display: flex;
+    justify-content: center;
 `
+
+const Main_Content = styled.div``
+
+const Right = styled.div``

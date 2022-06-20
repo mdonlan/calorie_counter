@@ -41,7 +41,11 @@ module.exports = {
                     getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
 
                 }
-            }
+            },
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+              },
         ]
     },
     devServer: {

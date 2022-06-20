@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
-import { get_recent_foods } from '../api';
+import { get_recent_foods, search_nutritionix_food_nutrients } from '../api';
+import { Food } from '../Types';
 
 export function Recent_Foods(props) {
     const [recent_foods, set_recent_foods] = useState([]);
@@ -18,12 +19,19 @@ export function Recent_Foods(props) {
         // set_recent_foods(data);
     }, []);
 
+    async function add_recent_food(food: Food) {
+        const food_copy = food;
+        const food_nutrients = await search_nutritionix_food_nutrients(food.food_name);
+        food_copy.alt_measures = food_nutrients.alt_measures;
+        props.set_food(food_copy);
+    }
+
     return (
         <Wrapper>
             {recent_foods &&
                 recent_foods.map(food => {
                     return (
-                       <Food_Item key={food.transaction_id} onClick={() => {props.set_food(food)}}>
+                       <Food_Item key={food.transaction_id} onClick={() => {add_recent_food(food)}}>
                             <Food_Name>{food.food_name}</Food_Name>
                             <Food_Cals>{food.calories_per_serving}</Food_Cals>
                        </Food_Item>

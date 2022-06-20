@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { search_food } from '../../api.js'
+import { search_food, search_nutritionix_food_nutrients } from '../../api'
 import styled from 'styled-components'
-import { Food } from './Add_Food'
+import { Food } from '../../Types'
 
 interface Nutritionix_Results {
     common: any[];
@@ -18,18 +18,20 @@ export function Search_Results_Nutritionix(props) {
     const [branded_show_count, set_branded_show_count] = useState<number>(5);
     
     useEffect(() => {
-        if (props.query.length > 0) {
-             search_food(props.query)
-            .then(async res => {
-                console.log(res)
-                set_results(res.data);
-            })
-        }
+        (async () => {
+            if (props.query.length > 0) {
+                const data = await search_food(props.query);
+                set_results(data);
+            }
+         })()    
     }, [props.query])
 
-    function handle_item_click(item) {
+    async function handle_item_click(item) {
         console.log("Clicked on a Nutritionix food item...", item);
         const converted_food = convert_nutritionix_food(item);
+        const food_nutrients = await search_nutritionix_food_nutrients(item.food_name);
+        // console.log(get_alt_measures);
+        converted_food.alt_measures = food_nutrients.alt_measures;
         props.set_food(converted_food);
     }
 
@@ -64,7 +66,8 @@ export function Search_Results_Nutritionix(props) {
             calcium: get_nutrient(food, 301),
             iron: get_nutrient(food, 303),
             meal:  props.meal,
-            serving_unit: food.serving_unit
+            serving_unit: food.serving_unit,
+            alt_measures: []
         }
 
         // console.log(food);

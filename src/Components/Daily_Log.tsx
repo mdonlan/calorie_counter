@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { get_data_from_db, get_food_details, get_food_from_today } from '../api'
+import { get_food_from_today } from '../api'
 import { Add_Food } from './Add_Food_To_Log/Add_Food';
 import { Edit_Log_Item } from './Edit_Log_Item';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,8 +26,8 @@ export function Daily_Log() {
     useEffect(() => {
         const fetch_foods = async () => {
             await get_food_from_today();
-            // const results = await get_food_from_date();
-            // set_log_items(results);
+        //     // const results = await get_food_from_date();
+        //     // set_log_items(results);
             get_totals();
 
         }
@@ -110,7 +110,7 @@ const Wrapper = styled.div`
     margin-left: 20px;
     margin-bottom: 20px;
     padding: 20px;
-    width: 600px;
+    width: 700px;
     background: ${props => props.theme.dp1};
     border-radius: 8px;
 `

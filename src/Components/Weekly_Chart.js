@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import { get_weekly_calories } from '../api'
+import { useSelector } from 'react-redux'
 
 export function Weekly_Chart() {
-
+    const daily_calorie_target = useSelector(state => state.default.user_data.daily_calorie_target);
     const [data, set_data] = useState([]);
     const [max, set_max] = useState(0);
 
     useEffect(async () => {
         const data = await get_weekly_calories();
-
+        
         let _max = 0;
         data.forEach(day => {
-            day.goal = 1500;
+            day.goal = daily_calorie_target;
             if (day.calories > _max) {
                 _max = day.calories;
             }
@@ -22,9 +23,7 @@ export function Weekly_Chart() {
         set_max(_max + (_max * .10));
         console.log(data);
         set_data(data);
-    }, [data.length])
-
-    // const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}, {name: 'Page B', uv: 300, pv: 2200, amt: 2400}];
+    }, [data.length, daily_calorie_target])
 
     return (
         <Wrapper>
@@ -32,7 +31,7 @@ export function Weekly_Chart() {
             <LineChart width={400} height={400} data={data}>
                 <XAxis dataKey="date"/>
                 <YAxis dataKey="calories" domain={[0, max]}/>
-                {/* <Legend align="left"/> */}
+                <Legend align="left"/>
                 <Line type="monotone" dataKey="calories" stroke="#3277a8" />
                 <Line type="monotone" dataKey="goal" stroke="#a84632" />
             </LineChart>

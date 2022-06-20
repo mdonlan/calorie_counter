@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { search_foods } from '../../api.js'
+import { search_foods } from '../../api'
 import styled from 'styled-components'
 import { Search_Results_Nutritionix } from './Search_Results_Nutritionix';
 // import { Search_Results_User_Created } from './Search_Results_User_Created';

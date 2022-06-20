@@ -10,9 +10,10 @@ export function Edit_Log_Item(props) {
         set_qty(e.target.value);
     }
 
-    function handle_save() {
-        update_log_item_qty(props.item, qty);
-        props.set_is_editing(false);
+    async function handle_save() {
+        await update_log_item_qty(props.item, qty);
+        get_food_from_today();
+        handle_cancel();
     }
 
     async function handle_delete() {
@@ -22,7 +23,7 @@ export function Edit_Log_Item(props) {
     }
 
     function handle_cancel() {
-        props.set_is_editing(false)
+        props.set_is_editing(false);
     }
 
     return (
