@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { get_food_from_today } from '../api'
+import { get_food_from_date, get_food_from_today } from '../api'
 import { Add_Food } from './Add_Food_To_Log/Add_Food';
 import { Edit_Log_Item } from './Edit_Log_Item';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RootState } from '../store';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays, subDays } from 'date-fns';
 
 const meals = ["Breakfast", "Lunch", "Dinner", "Snacks"]; 
 
 export function Daily_Log() {
-    const log_items = useSelector((state: RootState) => state.default.food_items_today);
+    const log_items = useSelector((state: RootState) => state.default.daily_food_items);
     const [totals, set_totals] = useState({
         cals: 0,
         carbs: 0,
@@ -21,18 +24,19 @@ export function Daily_Log() {
 
     const [is_editing_item, set_is_editing_item] = useState(false);
     const [active_item, set_active_item] = useState(null);
-    
+    const [date, set_date] = useState<Date>(new Date());
 
     useEffect(() => {
         const fetch_foods = async () => {
-            await get_food_from_today();
+            // await get_food_from_today();
+            await get_food_from_date(date);
         //     // const results = await get_food_from_date();
         //     // set_log_items(results);
             get_totals();
 
         }
         fetch_foods();
-    }, [log_items.length]);
+    }, [log_items.length, date]);
 
     function get_totals() {
         const new_total = {
@@ -59,7 +63,12 @@ export function Daily_Log() {
 
     return (
         <Wrapper>
-            <Today_Date>Daily Food Log - Today {new Date().toLocaleDateString()}</Today_Date>
+            <Title>
+                <Today_Date>Daily Food Log - Today {new Date().toLocaleDateString()}</Today_Date>
+                <Change_Day onClick={() => {set_date(subDays(date, 1))}}>&lt;</Change_Day>
+                <Change_Day onClick={() => {set_date(addDays(date, 1))}}>&gt;</Change_Day>
+                <DatePicker selected={date} onChange={(_date:Date) => set_date(_date)} />
+            </Title>
             <Column_Headers>
                 <Column_Title></Column_Title>
                 <Column_Title>Servings</Column_Title>
@@ -72,7 +81,7 @@ export function Daily_Log() {
                     <Meal key={meal_name}>
                         <Meal_Header>
                             <Meal_Title>{meal_name}</Meal_Title>
-                            <Add_Food meal={meal_name}/>    
+                            <Add_Food meal={meal_name} date={date}/>    
                         </Meal_Header>
                         <Meal_Items>
                             {log_items.filter(item => item.meal == meal_name).map((filtered_item, i) => {
@@ -113,6 +122,22 @@ const Wrapper = styled.div`
     width: 700px;
     background: ${props => props.theme.dp1};
     border-radius: 8px;
+`
+
+const Title = styled.div`
+    display: flex;
+`
+
+const Change_Day = styled.div`
+    margin-left: 8px;
+    background: red;
+    border-radius: 50%;
+    padding: 5px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
 const Today_Date = styled.div``

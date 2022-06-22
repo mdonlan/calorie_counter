@@ -7,6 +7,7 @@ export interface Initial_State {
     logged_in: boolean;
     username: string;
     food_items_today: Food[];
+    daily_food_items: Food[];
     recent_foods: [];
     user_data: User_Data;
 }
@@ -15,6 +16,7 @@ const initial_state: Initial_State = {
     logged_in: false,
     username: null,
     food_items_today: [],
+    daily_food_items: [],
     recent_foods: [],
     user_data: {
         username: null,
@@ -48,6 +50,10 @@ const default_slice = createSlice({
 
         set_user_data: (state, action) => {
             state.user_data = action.payload;
+        },
+
+        set_daily_food_items: (state, action) => {
+            state.daily_food_items = action.payload;
         }
     }
 });
@@ -63,7 +69,8 @@ export const {
     set_username,
     set_food_items_today,
     // set_add_food_selection,
-    set_user_data
+    set_user_data,
+    set_daily_food_items
 } = default_slice.actions;
 
 export default default_slice.reducer;

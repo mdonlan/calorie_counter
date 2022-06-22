@@ -1,6 +1,7 @@
 import axios from 'axios'
 import superagent from 'superagent'
-import { set_food_items_today, set_logged_in, set_username, set_user_data, store } from './store'
+import { set_food_items_today, set_logged_in, set_username, set_user_data, set_daily_food_items, store } from './store'
+import { Food } from './Types';
 // import { Weight_Entry } from './Components/Weight'
 
 let stored_token = null;
@@ -62,10 +63,20 @@ export function get_food_from_today() {
     .catch(e => console.log(e))
 }
 
+export function get_food_from_date(date: Date) {
+    return axios.post(`${host}/get_food_from_date`,
+    {"token": stored_token, "date": date})
+    .then(res => {
+        console.log(res.data.rows)
+        store.dispatch(set_daily_food_items(res.data.rows));
+    })
+    .catch(e => console.log(e))
+}
+
 // add a new food to the users food log
-export function add_food_to_log(new_food) {
+export function add_food_to_log(new_food: Food, date: Date) {
     return axios.post(`${host}/add_food_to_log`,
-       { "food": new_food, "token": stored_token }
+       { "food": new_food, "date": date, "token": stored_token }
     )
     .then(res => {
         // get_nutrients_for_food(new_food.food_name);
@@ -108,7 +119,7 @@ export function validate_token(token) {
             store.dispatch(set_username(res.data.username));
             stored_token = token;
             const user_data = await get_user_data();
-            console.log(user_data)
+            // console.log(user_data)
             store.dispatch(set_user_data(user_data));
         }
     })

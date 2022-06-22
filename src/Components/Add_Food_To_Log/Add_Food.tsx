@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { add_food_to_log, get_food_from_today } from '../../api';
+import { add_food_to_log, get_food_from_date } from '../../api';
 import { Search } from './Search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -55,11 +55,9 @@ export function Add_Food(props) {
             alt_measures: []
         }
 
-        console.log("new_food: ", new_food)
-
-        await add_food_to_log(new_food);
+        await add_food_to_log(new_food, props.date);
         set_food(null);
-        get_food_from_today();
+        get_food_from_date(props.date);
     }
 
     function handle_close() {
