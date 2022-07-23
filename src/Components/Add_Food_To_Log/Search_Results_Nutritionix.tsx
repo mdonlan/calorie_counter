@@ -48,6 +48,7 @@ export function Search_Results_Nutritionix(props) {
             food_name: food.food_name,
             calories_per_serving: get_nutrient(food, 208),
             servings: 1,
+            serving_qty: food.serving_qty,
             // serving_size: food.serving_unit,
             carbs: get_nutrient(food, 205),
             protein: get_nutrient(food, 203),

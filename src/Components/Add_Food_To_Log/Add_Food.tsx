@@ -33,6 +33,7 @@ export function Add_Food(props) {
             food_name: food.food_name,
             calories_per_serving: food.calories_per_serving,
             servings: servings,
+            serving_qty: food.serving_qty,  
             // serving_size: food.serving_size,
             carbs: food.carbs * servings,
             protein: food.protein * servings,
@@ -97,18 +98,21 @@ export function Add_Food(props) {
                         <Selected_Food>
                             <Food_Name>{food.food_name}</Food_Name>
                             <Servings>
+                               <div>
                                 <div>Servings: </div>
                                 <Servings_Input onChange={handle_servings} value={servings}/>
-                                <div>Serving Size: {food.serving_unit}</div>
+                               </div>
+                                <div>Serving Size: {food.serving_qty} {food.serving_unit}</div>
                                
-                                <select name="" id="">
+                                {/* <select name="" id="">
                                     {food.alt_measures && food.alt_measures.map(alt => {
                                         return (
                                             <option key={alt.measure}>{alt.measure}</option>
                                         )
                                     })}
-                                </select>
+                                </select> */}
                             </Servings>
+                            <div onClick={() => {set_show_details(!show_details)}}>Show Details</div>
                             {show_details &&
                                 <Food_Details>
                                     <Left>
@@ -284,6 +288,8 @@ const Servings = styled.div`
     display: flex;
     justify-content: center;
     margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
 `
 
 const Food_Name = styled.div`

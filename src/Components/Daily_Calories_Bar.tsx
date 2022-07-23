@@ -7,14 +7,14 @@ import { Food } from '../Types';
 import { User_Data } from '../Types';
 
 export function Daily_Calorie_Bar() {
-    const food_items_today = useSelector((state: RootState) => state.default.food_items_today);
+    const daily_food_items = useSelector((state: RootState) => state.default.daily_food_items);
     const user_data = useSelector((state: RootState) => state.default.user_data);
     const [calories, set_calories] = useState<number>(0);
     const [bar_width, set_bar_width] = useState<number>(100);
     const [fill_width, set_fill_width] = useState<number>(0);
 
     useEffect(() => {
-        const total = food_items_today.reduce((accumulator: number, object: Food) => {
+        const total = daily_food_items.reduce((accumulator: number, object: Food) => {
             return accumulator + object.calories_per_serving * object.servings;
         }, 0);
         set_calories(total);
@@ -25,11 +25,11 @@ export function Daily_Calorie_Bar() {
         }
         
 
-    }, [food_items_today.length, user_data])
+    }, [daily_food_items.length, user_data])
 
     return(
         <Wrapper>
-            <Title>Daily Calorie %</Title>
+            <Title>Daily Calorie Target</Title>
             <Bar>
                 {user_data &&
                     <Fill width={fill_width}></Fill>
@@ -56,12 +56,13 @@ const Wrapper = styled.div`
 const Title = styled.div`
     font-size: 18px;
     margin-bottom: 8px;
+    margin-top: 10px;
 `
 
 const Bar = styled.div`
     width: 100px;
     height: 30px;
-    background: #232323;
+    background: #323232;
     margin-bottom: 8px;
 `;
 
@@ -72,5 +73,5 @@ const Fill = styled.div<{width: number}>`
 `;
 
 const Total = styled.div`
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 `

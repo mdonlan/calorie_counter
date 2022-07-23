@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { get_food_from_date, get_food_from_today } from '../api'
+import { faPlus, faEdit, faArrowCircleLeft, faArrowAltCircleRight, faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { get_food_from_date } from '../api'
 import { Add_Food } from './Add_Food_To_Log/Add_Food';
 import { Edit_Log_Item } from './Edit_Log_Item';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -65,8 +65,8 @@ export function Daily_Log() {
         <Wrapper>
             <Title>
                 <Today_Date>Daily Food Log - Today {new Date().toLocaleDateString()}</Today_Date>
-                <Change_Day onClick={() => {set_date(subDays(date, 1))}}>&lt;</Change_Day>
-                <Change_Day onClick={() => {set_date(addDays(date, 1))}}>&gt;</Change_Day>
+                <Change_Day onClick={() => {set_date(subDays(date, 1))}} icon={faArrowCircleLeft}/>
+                <Change_Day onClick={() => {set_date(addDays(date, 1))}} icon={faArrowCircleRight}/>
                 <DatePicker selected={date} onChange={(_date:Date) => set_date(_date)} />
             </Title>
             <Column_Headers>
@@ -128,16 +128,24 @@ const Title = styled.div`
     display: flex;
 `
 
-const Change_Day = styled.div`
-    margin-left: 8px;
-    background: red;
-    border-radius: 50%;
-    padding: 5px;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+const Change_Day = styled(FontAwesomeIcon)`
+    margin-left: 5px;
+    margin-right: 5px;
+
+    :hover {
+        color: lightgreen;
+    }
+
+    cursor: pointer;
+
+    // background: red;
+    // border-radius: 50%;
+    // padding: 5px;
+    // width: 16px;
+    // height: 16px;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
 `
 
 const Today_Date = styled.div``

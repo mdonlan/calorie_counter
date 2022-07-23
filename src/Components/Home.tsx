@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Daily_Calorie_Bar } from './Daily_Calories_Bar'
 import { Daily_Log } from './Daily_Log'
+import { Macro_Chart } from './Macro_Chart'
 import { Weight } from './Weight'
 
 export function Home() {
@@ -15,6 +16,7 @@ export function Home() {
                 <Right>
                     <Weight />
                     <Daily_Calorie_Bar />
+                    <Macro_Chart />
                 </Right>
                 {/* <Weekly_Chart /> */}
             {/* </React.Fragment> */}

@@ -8,6 +8,7 @@ export interface Food {
     calories_per_serving: number;
     servings: number;
     meal: string; 
+    serving_qty: number;
     // serving_size: number;
     carbs: number;
     protein: number;

@@ -26,8 +26,11 @@ export function Weight() {
     async function get_data() {
         const data = await get_weight();
         set_weight_data(data);
+        if (data.length > 0) {
+            set_weight(data[data.length - 1].weight);
+        }
         const change = await get_monthly_weight_change();
-        // console.log("change: ", change.change)
+        console.log("change: ", change.change)
         set_monthly_change(change.change);
     }
 
@@ -38,28 +41,14 @@ export function Weight() {
 
     return (
         <Wrapper>
-            <Title>Current Weight: {weight_data.length > 0 ? weight_data[weight_data.length - 1].weight : 0}</Title>
-            {/* <div onClick={() => {set_adding_new(true)}}>add</div> */}
-            {/* {weight_data.map(entry => {
-                return (
-                    <div key={entry.id}>{entry.weight}</div>
-                )
-            })} */}
-            <div>Set Todays Weight</div>
-            <input value={weight} onChange={e => {set_weight(e.target.value.replace(/\D/g, ''))}}/>
-            <div onClick={() => {add_weight()}}>add</div>
-
-            <div>
-                <div>Monthly Change: {monthly_change}</div>
-            </div>
-            {/* {adding_new &&
-                <div>
-                    <div>adding new weight entry</div>
-                    <input value={weight} onChange={e => {set_weight(e.target.value.replace(/\D/g, ''))}}/>
-                    <DatePicker selected={entry_date} onChange={(date:Date) => set_entry_date(date)} />
-                    <div onClick={() => {add_weight_entry({date: entry_date, weight: weight})}}>add</div>
-                </div>
-            } */}
+            <Title>Weight</Title>
+            <div>Current: {weight_data.length > 0 ? weight_data[weight_data.length - 1].weight : 0}</div>
+            <Set>
+                <Weight_Input value={weight} onChange={e => {set_weight(e.target.value.replace(/\D/g, ''))}}/>
+                <div onClick={() => {add_weight()}}>Update</div>
+            </Set>
+            
+            <Change> Monthly Change: {monthly_change}</Change>
         </Wrapper>
     )
 }
@@ -68,9 +57,26 @@ const Wrapper = styled.div`
     // padding: 25px;
     color: ${props => props.theme.color};
     background: ${props => props.theme.dp1};
-    height: 200px;
+    // height: 200px;
     width: 225px;
     margin-top: 20px;
     margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
-const Title = styled.div``
+const Title = styled.div`
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+`
+const Set = styled.div`
+    display: flex;
+`
+
+const Weight_Input = styled.input`
+    width: 50px;
+`
+const Change = styled.div`
+    margin-bottom: 12px;
+`

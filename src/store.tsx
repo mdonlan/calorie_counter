@@ -6,7 +6,7 @@ import { Food } from './Types';
 export interface Initial_State {
     logged_in: boolean;
     username: string;
-    food_items_today: Food[];
+    // food_items_today: Food[];
     daily_food_items: Food[];
     recent_foods: [];
     user_data: User_Data;
@@ -15,7 +15,7 @@ export interface Initial_State {
 const initial_state: Initial_State = {
     logged_in: false,
     username: null,
-    food_items_today: [],
+    // food_items_today: [],
     daily_food_items: [],
     recent_foods: [],
     user_data: {
@@ -36,9 +36,9 @@ const default_slice = createSlice({
             state.username = action.payload;
         },
 
-        set_food_items_today: (state, action) => {
-            state.food_items_today = action.payload;
-        },
+        // set_food_items_today: (state, action) => {
+        //     state.food_items_today = action.payload;
+        // },
 
         // set_add_food_selection: (state, action) => {
         //     state.add_food_selection = action.payload;
@@ -67,7 +67,7 @@ const reducer = combineReducers({
 export const {
     set_logged_in,
     set_username,
-    set_food_items_today,
+    // set_food_items_today,
     // set_add_food_selection,
     set_user_data,
     set_daily_food_items

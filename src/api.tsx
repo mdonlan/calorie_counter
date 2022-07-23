@@ -1,6 +1,6 @@
 import axios from 'axios'
 import superagent from 'superagent'
-import { set_food_items_today, set_logged_in, set_username, set_user_data, set_daily_food_items, store } from './store'
+import { set_logged_in, set_username, set_user_data, set_daily_food_items, store } from './store'
 import { Food } from './Types';
 // import { Weight_Entry } from './Components/Weight'
 
@@ -55,13 +55,13 @@ export function search_nutritionix_food_nutrients(name) {
 
 
 // get all user foods from today
-export function get_food_from_today() {
-    return axios.get(`${host}/get_food_from_today`)
-    .then(res => {
-        store.dispatch(set_food_items_today(res.data.rows));
-    })
-    .catch(e => console.log(e))
-}
+// export function get_food_from_today() {
+//     return axios.get(`${host}/get_food_from_today`)
+//     .then(res => {
+//         store.dispatch(set_food_items_today(res.data.rows));
+//     })
+//     .catch(e => console.log(e))
+// }
 
 export function get_food_from_date(date: Date) {
     return axios.post(`${host}/get_food_from_date`,
