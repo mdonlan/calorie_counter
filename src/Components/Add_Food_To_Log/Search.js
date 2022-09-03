@@ -8,7 +8,7 @@ import { Search_Results_Nutritionix } from './Search_Results_Nutritionix';
 
 export function Search(props) {
     // const [results, set_results] = useState([]);
-    const [query, set_query] = useState('');
+    // const [query, set_query] = useState('');
     // const history = useHistory();
     const input_ref = useRef();
 
@@ -16,11 +16,15 @@ export function Search(props) {
         input_ref.current.focus(); // set the focus on load
     }, []);
 
+    function onchange_handler(e) {
+        props.set_query(e.target.value)
+    }
+
     return (
         <Wrapper>
-            <Input ref={input_ref} onChange={e => set_query(e.target.value)}  value={query} placeholder="search" />
+            <Input ref={input_ref} onChange={onchange_handler}  value={props.query} placeholder="search" />
             {/* <Search_Results_User_Created query={query} set_food={props.set_food} /> */}
-            <Search_Results_Nutritionix query={query} set_food={props.set_food} />
+            <Search_Results_Nutritionix query={props.query} set_food={props.set_food} />
         </Wrapper>
     )
 }

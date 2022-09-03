@@ -52,28 +52,33 @@ export function Macro_Chart() {
 
     let CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
         if (active) {
-           return (
-           <Custom_Tooltip>
-              <label>{`${payload[0].name} : ${payload[0].value}`}</label>
-           </Custom_Tooltip>
-        );
-     }
-     return null;
-  };
+            return (
+                <Custom_Tooltip>
+                    <label>{`${payload[0].name} : ${payload[0].value}`}</label>
+                </Custom_Tooltip>
+            );
+        }
+        return null;
+    };
+
+    function has_data() {
+        if (macros[0].value > 0 || macros[1].value > 0 || macros[2].value > 0) return true;
+        return false;
+    }
 
     return (
         <Wrapper>
             <Title>Daily Macros</Title>
-            <PieChart width={300} height={300}>
+            <PieChart width={200} height={200}>
                 <Pie
-                    data={macros}
+                    data={has_data() ? macros : [{name: "No Data", value: 1}]}
                     color="#000000"
                     key={Math.random()} // do this to force anim?
                     dataKey="value"
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={120}
+                    outerRadius={75}
                     fill="#8884d8"
                 >
                     {pieData.map((entry, index) => (
@@ -83,7 +88,9 @@ export function Macro_Chart() {
                         />
                     ))}
                 </Pie>
-                <Tooltip content={<CustomTooltip />} />
+                {has_data() &&
+                    <Tooltip content={<CustomTooltip />} />
+                }
                 <Legend />
                 </PieChart>
         </Wrapper>

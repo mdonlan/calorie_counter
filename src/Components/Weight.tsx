@@ -59,7 +59,7 @@ const Wrapper = styled.div`
     background: ${props => props.theme.dp1};
     // height: 200px;
     width: 225px;
-    margin-top: 20px;
+    margin-top: 40px;
     margin-left: 20px;
     display: flex;
     flex-direction: column;

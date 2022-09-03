@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { search_food, search_nutritionix_food_nutrients } from '../../api'
 import styled from 'styled-components'
@@ -16,15 +16,47 @@ export function Search_Results_Nutritionix(props) {
     const [show_branded, set_show_branded] = useState(true);
     const [common_show_count, set_common_show_count] = useState<number>(5);
     const [branded_show_count, set_branded_show_count] = useState<number>(5);
+
     
     useEffect(() => {
-        (async () => {
-            if (props.query.length > 0) {
-                const data = await search_food(props.query);
-                set_results(data);
+        const debounce_request = setTimeout(() => {
+            get_data();
+        }, 500)
+      
+        return () => clearTimeout(debounce_request)
+    }, [props.query])    
+
+    async function get_data() {
+        console.log('__ geting data!');
+        if (props.query.length > 2) {
+            const data: Nutritionix_Results = await search_food(props.query);
+            remove_dupes(data);
+            set_results(data);
+        }
+    }
+
+    // remove duplicate items for the search results
+    // only can do this for common? not branded?
+    function remove_dupes(data: Nutritionix_Results) {
+        const tag_ids: number[] = [];
+        const new_common_arr = [];
+
+        for (let food of data.common) {
+            let is_dupe: boolean = false;
+            for (let id of tag_ids) {
+                if (id == food.tag_id) {
+                    is_dupe = true;
+                }
             }
-         })()    
-    }, [props.query])
+
+            if (!is_dupe) {
+                tag_ids.push(food.tag_id);
+                new_common_arr.push(food);
+            }
+        }
+
+        data.common = new_common_arr;
+    }
 
     async function handle_item_click(item) {
         console.log("Clicked on a Nutritionix food item...", item);

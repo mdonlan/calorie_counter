@@ -9,7 +9,8 @@ import { Food, Alt_Measure } from '../../Types'
 
 enum View {
     SEARCH,
-    RECENT
+    RECENT,
+    UPLOAD_PHOTO
 }
 
 export function Add_Food(props) {
@@ -18,6 +19,7 @@ export function Add_Food(props) {
     const [servings, set_servings] = useState<number>(1);
     const [view, set_view] = useState<View>(View.SEARCH);
     const [show_details, set_show_details] = useState<boolean>(false);
+    const [search_query, set_search_query] = useState<string>("");
     
     useEffect(() => {
         const close = e => {
@@ -58,7 +60,9 @@ export function Add_Food(props) {
 
         await add_food_to_log(new_food, props.date);
         set_food(null);
+        set_search_query("");
         get_food_from_date(props.date);
+        
     }
 
     function handle_close() {
@@ -85,12 +89,17 @@ export function Add_Food(props) {
                             <View_Buttons>
                                 <View_Button onClick={() => set_view(View.SEARCH)}>search</View_Button>
                                 <View_Button onClick={() => set_view(View.RECENT)}>recent</View_Button>
+                                <View_Button onClick={() => {set_view(View.UPLOAD_PHOTO)}}>scan food</View_Button>
                             </View_Buttons>
                             {view == View.SEARCH &&
-                                <Search set_food={set_food}/>
+                                <Search set_food={set_food} query={search_query} set_query={set_search_query}/>
                             }
                             {view == View.RECENT &&
                                  <Recent_Foods set_food={set_food}/>
+                            }
+                            {view == View.UPLOAD_PHOTO &&
+                                // <input type="file" accept="image/*" capture="camera" />
+                                <input accept="image/*" id="icon-button-file" type="file" capture="environment"/>
                             }
                         </React.Fragment>
                     }
@@ -145,7 +154,7 @@ export function Add_Food(props) {
                             }
                             <Buttons>
                                 <Confirm_Button onClick={handle_confirm}>Confirm</Confirm_Button>
-                                <Cancel_Button onClick={handle_close}>Cancel</Cancel_Button>
+                                <Cancel_Button onClick={() => set_food(null)}>Cancel</Cancel_Button>
                             </Buttons>
                         </Selected_Food>
                     }
@@ -168,6 +177,7 @@ const Panel = styled.div<{ active: boolean }>`
     left: calc(25%);
     border: 1px solid #dddddd;
     overflow-y: auto;
+    z-index: 1; // to prevent recharts legend from clipping through
 `
 
 

@@ -10,6 +10,7 @@ const host = 'http://192.168.0.224:3003'; // for dev purposes, allows access on 
 
 // search the nutritionix db for foods based on a query
 export function search_food(query) {
+    // console.log('searching food')
     return axios.post(`${host}/search_foods_nutritionix`, {
         headers: { "Authorization" : `Bearer ${stored_token}` }, 
         "query": query
