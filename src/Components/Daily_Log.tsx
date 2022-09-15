@@ -119,7 +119,12 @@ const Wrapper = styled.div`
     margin-left: 20px;
     margin-bottom: 20px;
     padding: 20px;
-    width: 700px;
+    // width: 700px;
+
+    @media (max-width: 800px) {
+        width: 80%;
+    }
+
     background: ${props => props.theme.dp1};
     border-radius: 8px;
 `

@@ -13,3 +13,15 @@ export const theme = {
     dp4: "rgba(255, 255, 255, 0.30)",
     dp5: "rgba(255, 255, 255, 0.40)",
 };
+
+export const size = {
+    sm: '320px',
+    md: '768px',
+    lg: '1200px'
+};
+
+export const device = {
+    sm: `(max-width: ${size.sm})`,
+    md: `(max-width: ${size.md})`,
+    lg: `(max-width: ${size.lg})`
+};

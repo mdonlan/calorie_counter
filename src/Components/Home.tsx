@@ -6,33 +6,31 @@ import { Macro_Chart } from './Macro_Chart'
 import { Weight } from './Weight'
 
 export function Home() {
-
     return(
         <Wrapper>
-            {/* <React.Fragment> */}
-                <Main_Content>
-                    <Daily_Log />
-                </Main_Content>
-                <Right>
-                    <Weight />
-                    <Daily_Calorie_Bar />
-                    <Macro_Chart />
-                </Right>
-                {/* <Weekly_Chart /> */}
-            {/* </React.Fragment> */}
-            {/* <Search /> */}
-            
-            {/* <Add_Food /> */}
+            <Main_Content>
+                <Daily_Log />
+            </Main_Content>
+            <Secondary_Content>
+                <Weight />
+                <Daily_Calorie_Bar />
+                <Macro_Chart />
+            </Secondary_Content>
         </Wrapper>
     )
-}
+} 
 
 const Wrapper = styled.div`
     overflow: auto;
     display: flex;
     justify-content: center;
+
+    @media (max-width: 800px) {
+        flex-direction: column;
+    }
+    
 `
 
 const Main_Content = styled.div``
 
-const Right = styled.div``
+const Secondary_Content = styled.div``

@@ -5,7 +5,8 @@ import { Food } from './Types';
 // import { Weight_Entry } from './Components/Weight'
 
 let stored_token = null;
-const host = 'http://192.168.0.224:3003'; // for dev purposes, allows access on different computers on same network
+// const host = 'http://157.230.58.188:3000';
+const host = 'https://192.168.0.224:3000'; // for dev purposes, allows access on different computers on same network
 // const host = 'http://localhost:3000';
 
 // search the nutritionix db for foods based on a query
@@ -115,12 +116,13 @@ export function validate_token(token) {
         { "token": token }
     )
     .then(async (res) => {
+        console.log(res.data);
         if (res.data.valid_token) {
             store.dispatch(set_logged_in(true));
             store.dispatch(set_username(res.data.username));
             stored_token = token;
             const user_data = await get_user_data();
-            // console.log(user_data)
+            console.log(user_data)
             store.dispatch(set_user_data(user_data));
         }
     })

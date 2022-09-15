@@ -6,11 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Recent_Foods } from '../Recent_Foods';
 import { Food, Alt_Measure } from '../../Types'
+import { Barcode_Scanner } from '../Barcode_Scanner'
+import { device } from '../../theme.js'
 
 enum View {
     SEARCH,
     RECENT,
-    UPLOAD_PHOTO
+    SCAN
 }
 
 export function Add_Food(props) {
@@ -89,7 +91,7 @@ export function Add_Food(props) {
                             <View_Buttons>
                                 <View_Button onClick={() => set_view(View.SEARCH)}>search</View_Button>
                                 <View_Button onClick={() => set_view(View.RECENT)}>recent</View_Button>
-                                <View_Button onClick={() => {set_view(View.UPLOAD_PHOTO)}}>scan food</View_Button>
+                                <View_Button onClick={() => {set_view(View.SCAN)}}>scan food</View_Button>
                             </View_Buttons>
                             {view == View.SEARCH &&
                                 <Search set_food={set_food} query={search_query} set_query={set_search_query}/>
@@ -97,9 +99,14 @@ export function Add_Food(props) {
                             {view == View.RECENT &&
                                  <Recent_Foods set_food={set_food}/>
                             }
-                            {view == View.UPLOAD_PHOTO &&
+                            {/* {view == View.UPLOAD_PHOTO &&
                                 // <input type="file" accept="image/*" capture="camera" />
                                 <input accept="image/*" id="icon-button-file" type="file" capture="environment"/>
+                            } */}
+                            {view == View.SCAN &&
+                                // <input type="file" accept="image/*" capture="camera" />
+                                // <input accept="image/*" id="icon-button-file" type="file" capture="environment"/>
+                                <Barcode_Scanner />
                             }
                         </React.Fragment>
                     }
@@ -178,6 +185,10 @@ const Panel = styled.div<{ active: boolean }>`
     border: 1px solid #dddddd;
     overflow-y: auto;
     z-index: 1; // to prevent recharts legend from clipping through
+
+    @media (max-width: 800px) {
+       width: 100%;
+    }
 `
 
 
