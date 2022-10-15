@@ -5,8 +5,9 @@ import { Food } from './Types';
 // import { Weight_Entry } from './Components/Weight'
 
 let stored_token = null;
+const host = "https://calorieserver.michaeldonlan.com";
 // const host = 'http://157.230.58.188:3000';
-const host = 'https://192.168.0.224:3000'; // for dev purposes, allows access on different computers on same network
+// const host = 'https://192.168.0.224:3000'; // for dev purposes, allows access on different computers on same network
 // const host = 'http://localhost:3000';
 
 // search the nutritionix db for foods based on a query
@@ -112,6 +113,7 @@ export function register_user(data) {
 }
 
 export function validate_token(token) {
+    console.log("validating token: " + token);
     return axios.post(`${host}/validate_token`, 
         { "token": token }
     )
@@ -195,15 +197,54 @@ export function get_weekly_calories() {
     .catch(e => console.log(e))
 }
 
+// // Example POST method implementation:
+// async function postData(url = '', data = {}) {
+//     // Default options are marked with *
+//     const response = await fetch(url, {
+//       method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//       mode: 'cors', // no-cors, *cors, same-origin
+//       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+//       credentials: 'same-origin', // include, *same-origin, omit
+//       headers: {
+//         'Content-Type': 'application/json'
+//         // 'Content-Type': 'application/x-www-form-urlencoded',
+//       },
+//       redirect: 'follow', // manual, *follow, error
+//       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+//       body: JSON.stringify(data) // body data type must match "Content-Type" header
+//     });
+//     return response.json(); // parses JSON response into native JavaScript objects
+//   }
+  
+  
+  
+
 export function login(data) {
-    return superagent.post(`${host}/login`)
-    .send({ username: data.username, password: data.password })
+    // postData(`${host}/login`, { username: "test", password: "test" })
+    // .then((data) => {
+    //   console.log(data); // JSON data parsed by `data.json()` call
+    // });
+    // return superagent.post(`${host}/login`)
+    // .send({ username: data.username, password: data.password })
+    // .then(res => {
+    //     localStorage.setItem("token", res.body.token);
+    //     stored_token = res.body.token;
+    //     // store.dispatch(set_token(res.body.token));
+    //     store.dispatch(set_logged_in(true));
+    //     return res.body.message;
+    // })
+    // .catch(e => {
+    //     console.log(e)
+    //     return e.message;
+    // })
+    return axios.post(`${host}/login`, { username: data.username, password: data.password })
     .then(res => {
-        localStorage.setItem("token", res.body.token);
-        stored_token = res.body.token;
+        console.log(res);
+        localStorage.setItem("token", res.data.token);
+        stored_token = res.data.token;
         // store.dispatch(set_token(res.body.token));
         store.dispatch(set_logged_in(true));
-        return res.body.message;
+        return res.data.message;
     })
     .catch(e => {
         console.log(e)
