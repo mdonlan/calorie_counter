@@ -238,7 +238,8 @@ export function login(data) {
     //     return e.message;
     // })
     console.log("start of login--api");
-    return axios.post(`${host}/login/`, { username: data.username, password: data.password })
+    return superagent.post(`${host}/login/`)
+    .send({ username: data.username, password: data.password })
     .then(res => {
         console.log(res);
         localStorage.setItem("token", res.data.token);
@@ -252,6 +253,20 @@ export function login(data) {
         console.log(e)
         return e.message;
     })
+    // return axios.post(`${host}/login/`, { username: data.username, password: data.password })
+    // .then(res => {
+    //     console.log(res);
+    //     localStorage.setItem("token", res.data.token);
+    //     stored_token = res.data.token;
+    //     // store.dispatch(set_token(res.body.token));
+    //     store.dispatch(set_logged_in(true));
+    //     return res.data.message;
+    // })
+    // .catch(e => {
+    //     console.log("LOGIN ERROR");
+    //     console.log(e)
+    //     return e.message;
+    // })
 }
 
 // export function create_user_food(data) {
