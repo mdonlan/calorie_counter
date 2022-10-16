@@ -13,6 +13,8 @@ export function Login() {
     async function handle_submit(e) {
         e.preventDefault();
         console.log('handle_submit');
+        console.log(username);
+        console.log(password);
         let result;
         try {
             result = await login({ username: username, password: password});
