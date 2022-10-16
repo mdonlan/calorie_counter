@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Recent_Foods } from '../Recent_Foods';
 import { Food, Alt_Measure } from '../../Types'
-import { Barcode_Scanner } from '../Barcode_Scanner'
+import { Barcode_Scanner } from './Barcode_Scanner'
 import { device } from '../../theme.js'
 
 enum View {
@@ -106,7 +106,7 @@ export function Add_Food(props) {
                             {view == View.SCAN &&
                                 // <input type="file" accept="image/*" capture="camera" />
                                 // <input accept="image/*" id="icon-button-file" type="file" capture="environment"/>
-                                <Barcode_Scanner />
+                                <Barcode_Scanner set_food={set_food}/>
                             }
                         </React.Fragment>
                     }

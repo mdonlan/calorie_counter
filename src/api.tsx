@@ -5,10 +5,10 @@ import { Food } from './Types';
 // import { Weight_Entry } from './Components/Weight'
 
 let stored_token = null;
-const host = "https://calorieserver.michaeldonlan.com";
+// const host = "https://calorieserver.michaeldonlan.com";
 // const host = 'http://157.230.58.188:3000';
 // const host = 'https://192.168.0.224:3000'; // for dev purposes, allows access on different computers on same network
-// const host = 'http://localhost:3000';
+const host = 'http://localhost:3000';
 
 // search the nutritionix db for foods based on a query
 export function search_food(query) {
@@ -306,11 +306,17 @@ export function get_monthly_weight_change() {
     .catch(e => console.log(e))
 }
 
-
-
 export function get_user_data() {
     return superagent.post(`${host}/get_user_data`)
     .send({"token": stored_token})
+    .then(res => {return res.body})
+    .catch(e => console.log(e))
+}
+
+export function search_upc(upc) {
+    console.log("upc_code: " + upc);
+    return superagent.post(`${host}/search_upc`)
+    .send({"token": stored_token, "upc": upc})
     .then(res => {return res.body})
     .catch(e => console.log(e))
 }
