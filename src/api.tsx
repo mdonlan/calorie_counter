@@ -5,10 +5,10 @@ import { Food } from './Types';
 // import { Weight_Entry } from './Components/Weight'
 
 let stored_token = null;
-// const host = "https://calorieserver.michaeldonlan.com";
+const host = "https://calorieserver.michaeldonlan.com";
 // const host = 'http://157.230.58.188:3000';
 // const host = 'https://192.168.0.224:3000'; // for dev purposes, allows access on different computers on same network
-const host = 'http://localhost:3000';
+// const host = 'http://localhost:3000';
 
 // search the nutritionix db for foods based on a query
 export function search_food(query) {
