@@ -59,12 +59,11 @@ export function Add_Food(props) {
             serving_unit: food.serving_unit,
             alt_measures: []
         }
-
+        console.log('new_food: ', new_food)
         await add_food_to_log(new_food, props.date);
         set_food(null);
         set_search_query("");
         get_food_from_date(props.date);
-        
     }
 
     function handle_close() {

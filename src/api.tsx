@@ -5,7 +5,15 @@ import { Food } from './Types';
 // import { Weight_Entry } from './Components/Weight'
 
 let stored_token = null;
-const host = "https://calorieserver.michaeldonlan.com";
+let host = null;
+
+if (window.location.href.includes("localhost")) {
+    host = 'http://localhost:3000';
+} else {
+    host = "https://calorieserver.michaeldonlan.com";
+}
+
+// const host = "https://calorieserver.michaeldonlan.com";
 // const host = 'http://157.230.58.188:3000';
 // const host = 'https://192.168.0.224:3000'; // for dev purposes, allows access on different computers on same network
 // const host = 'http://localhost:3000';
@@ -92,7 +100,7 @@ export function delete_food_from_log(food) {
     return axios.post(`${host}/delete_food_from_log`, 
         { "food": food }
     )
-    // .then(res => console.log(res))
+    .then(res => {})
     .catch(e => console.log(e))
 }
 
@@ -334,6 +342,13 @@ export function search_upc(upc) {
     console.log("upc_code: " + upc);
     return superagent.post(`${host}/search_upc`)
     .send({"token": stored_token, "upc": upc})
+    .then(res => {return res.body})
+    .catch(e => console.log(e))
+}
+
+export function get_recent_weights() {
+    return superagent.post(`${host}/get_recent_weights`)
+    .send({"token": stored_token})
     .then(res => {return res.body})
     .catch(e => console.log(e))
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { faPlus, faEdit, faArrowCircleLeft, faArrowAltCircleRight, faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faArrowCircleLeft, faArrowAltCircleRight, faArrowCircleRight, faPen } from '@fortawesome/free-solid-svg-icons';
 import { get_food_from_date } from '../api'
 import { Add_Food } from './Add_Food_To_Log/Add_Food';
 import { Edit_Log_Item } from './Edit_Log_Item';
@@ -88,9 +88,10 @@ export function Daily_Log() {
                                 return (
                                     <Item key={i}>
                                         <Text>{filtered_item.food_name}</Text>
-                                        <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text>
+                                        {/* <Text>{filtered_item.servings} {filtered_item.serving_unit}</Text> */}
+                                        <Text>{filtered_item.servings * filtered_item.serving_qty} {filtered_item.serving_unit}</Text>
                                         <Text>{Math.round(filtered_item.calories_per_serving * filtered_item.servings)}</Text>
-                                        <Edit_Btn><FontAwesomeIcon onClick={() => {set_edit_item(filtered_item)}} icon={faEdit}/></Edit_Btn>
+                                        <Edit_Btn><Icon_Styled onClick={() => {set_edit_item(filtered_item)}} icon={faPen}/></Edit_Btn>
                                     </Item>
                                 )
                             })}
@@ -100,7 +101,7 @@ export function Daily_Log() {
             })}
 
             {is_editing_item &&
-                <Edit_Log_Item item={active_item} set_is_editing={set_is_editing_item}/>
+                <Edit_Log_Item item={active_item} set_is_editing={set_is_editing_item} date={date}/>
             }
 
             <Totals>
@@ -223,3 +224,13 @@ const Column_Title = styled.div`
     color: ${props => props.theme.dp5};
     font-size: 14px;
 `
+
+const Icon_Styled = styled(FontAwesomeIcon)`
+    opacity: 0.3;
+
+    :hover {
+        opacity: 1;
+    }
+
+    cursor: pointer;
+` 

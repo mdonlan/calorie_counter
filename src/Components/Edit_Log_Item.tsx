@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { delete_food_from_log, update_log_item_qty } from '../api'
+import { delete_food_from_log, update_log_item_qty, get_food_from_date } from '../api'
 
 export function Edit_Log_Item(props) {
 
@@ -19,7 +19,8 @@ export function Edit_Log_Item(props) {
     async function handle_delete() {
         await delete_food_from_log(props.item);
         // get_food_from_today();
-        handle_cancel();
+        await get_food_from_date(props.date);
+        props.set_is_editing(false);
     }
 
     function handle_cancel() {

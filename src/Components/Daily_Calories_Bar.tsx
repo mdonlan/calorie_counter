@@ -12,6 +12,7 @@ export function Daily_Calorie_Bar() {
     const [calories, set_calories] = useState<number>(0);
     const [bar_width, set_bar_width] = useState<number>(100);
     const [fill_width, set_fill_width] = useState<number>(0);
+    const [current_fill_width, set_current_fill_width] = useState<number>(0);
 
     useEffect(() => {
         const total = daily_food_items.reduce((accumulator: number, object: Food) => {
@@ -23,16 +24,25 @@ export function Daily_Calorie_Bar() {
         if (isFinite(fill_width_size)) {
             set_fill_width(fill_width_size);
         }
+
+      
+
+        const interval = setInterval(() => {
+            if (current_fill_width < fill_width) {
+                set_current_fill_width(current_fill_width + 1);
+            }
+        }, 10);
+        return () => clearInterval(interval);
         
 
-    }, [daily_food_items.length, user_data])
+    }, [daily_food_items.length, user_data, current_fill_width])
 
     return(
         <Wrapper>
             <Title>Daily Calorie Target</Title>
             <Bar>
                 {user_data &&
-                    <Fill width={fill_width}></Fill>
+                    <Fill width={current_fill_width}></Fill>
                 }
             </Bar>
             <Total>{Math.round(calories)}/{user_data.daily_calorie_target}</Total>
@@ -70,6 +80,7 @@ const Fill = styled.div<{width: number}>`
     width: ${props => props.width}px;
     height: 30px;
     background: blue;
+    // transitions: 2s;
 `;
 
 const Total = styled.div`
