@@ -248,6 +248,7 @@ export function login(data) {
         return res.data.message;
     })
     .catch(e => {
+        console.log("LOGIN ERROR");
         console.log(e)
         return e.message;
     })
