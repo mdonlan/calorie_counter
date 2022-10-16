@@ -49,7 +49,7 @@ module.exports = {
         ]
     },
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
+        static: path.join(__dirname, 'dist'),
         port: 8082,
         hot: true,
         historyApiFallback: true // why is this needed? w/out manual routes fail on dev mode!

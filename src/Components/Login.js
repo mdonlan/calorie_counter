@@ -13,9 +13,15 @@ export function Login() {
     async function handle_submit(e) {
         e.preventDefault();
         console.log('handle_submit');
-        const result = await login({ username: username, password: password});
-        history.push('/');
+        let result;
+        try {
+            result = await login({ username: username, password: password});
+        } catch (e) {
+            console.log(e);
+        }
         console.log(result)
+        history.push('/');
+        
     }
 
     return (
