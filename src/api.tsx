@@ -237,7 +237,8 @@ export function login(data) {
     //     console.log(e)
     //     return e.message;
     // })
-    return axios.post(`${host}/login`, { username: data.username, password: data.password })
+    console.log("start of login--api");
+    return axios.post(`${host}/login/`, { username: data.username, password: data.password })
     .then(res => {
         console.log(res);
         localStorage.setItem("token", res.data.token);
