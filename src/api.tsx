@@ -241,12 +241,12 @@ export function login(data) {
     return superagent.post(`${host}/login/`)
     .send({ username: data.username, password: data.password })
     .then(res => {
-        console.log(res);
-        localStorage.setItem("token", res.data.token);
-        stored_token = res.data.token;
+        console.log(res.body);
+        localStorage.setItem("token", res.body.token);
+        stored_token = res.body.token;
         // store.dispatch(set_token(res.body.token));
         store.dispatch(set_logged_in(true));
-        return res.data.message;
+        return res.body.message;
     })
     .catch(e => {
         console.log("LOGIN ERROR");
