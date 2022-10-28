@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { search_food, search_nutritionix_food_nutrients } from '../../api'
 import styled from 'styled-components'
 import { Food } from '../../Types'
+import { convert_nutritionix_food } from '../../api'
 
 interface Nutritionix_Results {
     common: any[];
@@ -60,52 +61,14 @@ export function Search_Results_Nutritionix(props) {
 
     async function handle_item_click(item) {
         console.log("Clicked on a Nutritionix food item...", item);
-        const converted_food = convert_nutritionix_food(item);
+        const converted_food = convert_nutritionix_food(item, props.meal);
         const food_nutrients = await search_nutritionix_food_nutrients(item.food_name);
         // console.log(get_alt_measures);
         converted_food.alt_measures = food_nutrients.alt_measures;
         props.set_food(converted_food);
     }
 
-    function get_nutrient(food, index) {
-        const value = food.full_nutrients.find(a => a.attr_id == index);
-        if (value == undefined) return 0;
-        return value.value;
-    }
-
-    function convert_nutritionix_food(food) {
-        // console.log("nutritionix_food: ", nutritionix_food);
-
-        const new_food: Food = {
-            food_name: food.food_name,
-            calories_per_serving: get_nutrient(food, 208),
-            servings: 1,
-            serving_qty: food.serving_qty,
-            // serving_size: food.serving_unit,
-            carbs: get_nutrient(food, 205),
-            protein: get_nutrient(food, 203),
-            total_fat: get_nutrient(food, 204),
-            trans_fat: get_nutrient(food, 605),
-            sat_fat: get_nutrient(food, 606),
-            poly_fat: get_nutrient(food, 646),
-            mono_fat: get_nutrient(food, 645),
-            cholesterol: get_nutrient(food, 601),
-            sodium: get_nutrient(food, 307),
-            potassium: get_nutrient(food, 306),
-            fiber: get_nutrient(food, 291),
-            sugar: get_nutrient(food, 269),
-            vitamin_a: get_nutrient(food, 318),
-            vitamin_c: get_nutrient(food, 401),
-            calcium: get_nutrient(food, 301),
-            iron: get_nutrient(food, 303),
-            meal:  props.meal,
-            serving_unit: food.serving_unit,
-            alt_measures: []
-        }
-
-        // console.log(food);
-        return new_food;
-    }
+    
 
     function num_results() {
         if (results.common) {
@@ -118,13 +81,13 @@ export function Search_Results_Nutritionix(props) {
             {props.query.length > 0 &&
                 <React.Fragment>
                     {/* <Title>Nutritionix Foods</Title> */}
-                    <div>Results: {num_results()}</div>
+                    <Num_Results>Results: {num_results()}</Num_Results>
                 </React.Fragment>
             }
             <Filters>
-                <Filter_Item onClick={() => {set_show_branded(true); set_show_common(true)}}>All</Filter_Item>
-                <Filter_Item onClick={() => {set_show_branded(false); set_show_common(true)}}>Common</Filter_Item>
-                <Filter_Item onClick={() => {set_show_branded(true); set_show_common(false)}}>Branded</Filter_Item>
+                <Filter_Item active={show_branded && show_common} onClick={() => {set_show_branded(true); set_show_common(true)}}>All</Filter_Item>
+                <Filter_Item active={show_common && !show_branded} onClick={() => {set_show_branded(false); set_show_common(true)}}>Common</Filter_Item>
+                <Filter_Item active={show_branded && !show_common} onClick={() => {set_show_branded(true); set_show_common(false)}}>Branded</Filter_Item>
             </Filters>
             <Results>
                 {results.common.length > 0 && show_common && <Title>Common</Title>}
@@ -180,6 +143,7 @@ export function Search_Results_Nutritionix(props) {
 }
 
 const Wrapper = styled.div``
+
 const Input = styled.input`
     outline: none;
     border: none;
@@ -243,20 +207,19 @@ const Calories = styled.div`
 
 const Filters = styled.div`
     display: flex;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    background: rgba(255, 255, 255, 0.05);
+    justify-content: center;
+    margin: 5px;
 `
 
-const Filter_Item = styled.div`
+const Filter_Item = styled.div<{active: boolean}>`
     padding: 3px;
     margin-left: 3px;
     margin-right: 3px;
-    background: #222222;
+    background: ${props => props.active ? props.theme.dp5 : "#222222"};
     cursor: pointer;
 
     :hover {
-        background: #343434;
+        // background: #343434;
     }
 `
 
@@ -271,4 +234,8 @@ const Show_More_Btn = styled.div`
     :hover {
         background: ${props => props.theme.dp5};
     }
+`
+
+const Num_Results = styled.div`
+    text-align: center;
 `

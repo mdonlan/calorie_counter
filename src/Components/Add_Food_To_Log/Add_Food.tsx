@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { add_food_to_log, get_food_from_date } from '../../api';
 import { Search } from './Search';
@@ -22,14 +22,28 @@ export function Add_Food(props) {
     const [view, set_view] = useState<View>(View.SEARCH);
     const [show_details, set_show_details] = useState<boolean>(false);
     const [search_query, set_search_query] = useState<string>("");
+    const panel_ref = useRef(null);
     
     useEffect(() => {
-        const close = e => {
+        const close_event = e => {
+            console.log('closing')
             if (e.keyCode === 27) handle_close()
         }
-        window.addEventListener('keydown', close)
-      return () => window.removeEventListener('keydown', close)
-    },[])
+    
+        const click_event = e => {
+            if (active && panel_ref.current && !panel_ref.current.contains(e.target)) {
+                set_active(false);
+            }
+        }
+
+        window.addEventListener('click', click_event);
+        window.addEventListener('keydown', close_event);
+        
+        return () => {
+            window.removeEventListener('keydown', close_event);
+            window.removeEventListener('click', click_event);
+        }
+    },[active])
 
     async function handle_confirm() {        
         console.log(food)
@@ -57,7 +71,8 @@ export function Add_Food(props) {
             iron: food.iron * servings,
             meal:  props.meal,
             serving_unit: food.serving_unit,
-            alt_measures: []
+            alt_measures: [],
+            photo: food.photo
         }
         console.log('new_food: ', new_food)
         await add_food_to_log(new_food, props.date);
@@ -79,18 +94,19 @@ export function Add_Food(props) {
         <Wrapper>
             <Add_Button onClick={() => {set_active(true)}} icon={faPlus} fixedWidth ></Add_Button>
 
-            <Panel active={active}>
+            
+            <Panel active={active} ref={panel_ref}>
                 <Top>
-                    <Panel_Title>ADD FOOD</Panel_Title>
-                    <Close_Btn onClick={() => {set_active(false)}}>X</Close_Btn>
+                    <Panel_Title>Add Food</Panel_Title>
+                    {/* <Close_Btn onClick={() => {set_active(false)}}>X</Close_Btn> */}
                 </Top>
                 <Bottom>
                     {active && !food &&
                         <React.Fragment>
                             <View_Buttons>
-                                <View_Button onClick={() => set_view(View.SEARCH)}>search</View_Button>
-                                <View_Button onClick={() => set_view(View.RECENT)}>recent</View_Button>
-                                <View_Button onClick={() => {set_view(View.SCAN)}}>scan food</View_Button>
+                                <View_Button active={view == View.SEARCH} onClick={() => set_view(View.SEARCH)}>search</View_Button>
+                                <View_Button active={view == View.RECENT} onClick={() => set_view(View.RECENT)}>recent</View_Button>
+                                <View_Button active={view == View.SCAN} onClick={() => {set_view(View.SCAN)}}>scan food</View_Button>
                             </View_Buttons>
                             {view == View.SEARCH &&
                                 <Search set_food={set_food} query={search_query} set_query={set_search_query}/>
@@ -112,11 +128,12 @@ export function Add_Food(props) {
                     {active && food &&
                         <Selected_Food>
                             <Food_Name>{food.food_name}</Food_Name>
+                            <Thumbnail src={food.photo} />
                             <Servings>
-                               <div>
-                                <div>Servings: </div>
-                                <Servings_Input onChange={handle_servings} value={servings}/>
-                               </div>
+                               <Servings_Text>
+                                    <div>Servings: </div>
+                                    <Servings_Input onChange={handle_servings} value={servings}/>
+                               </Servings_Text>
                                 <div>Serving Size: {food.serving_qty} {food.serving_unit}</div>
                                
                                 {/* <select name="" id="">
@@ -155,7 +172,7 @@ export function Add_Food(props) {
                                     </Right>
                                     
                                     
-                                    {/* <Thumbnail src={food.photo.thumb} /> */}
+                                    
                                 </Food_Details>
                             }
                             <Buttons>
@@ -166,6 +183,7 @@ export function Add_Food(props) {
                     }
                 </Bottom>
             </Panel>
+            <Overlay active={active}></Overlay>
         </Wrapper>
     )
 }
@@ -175,19 +193,47 @@ const Wrapper = styled.div``
 const Panel = styled.div<{ active: boolean }>`
     display: ${props => props.active ? 'flex' : 'none'};
     flex-direction: column;
-    width: 50%;
-    height: 50%;
-    background: #333333;
+    align-items: center;
+    background: #222222;
     position: absolute;
-    top: calc(25%);
-    left: calc(25%);
-    border: 1px solid #dddddd;
     overflow-y: auto;
-    z-index: 1; // to prevent recharts legend from clipping through
+    z-index: 3; // to prevent recharts legend from clipping through
+    width: 400px;
+    height: 500px;
+    left: calc(50% - 200px);
+    top: calc(50% - 250px);
+    -webkit-box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.48);
+    -moz-box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.48);
+    box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.48);
 
-    @media (max-width: 800px) {
-       width: 100%;
-    }
+    // @media ${device.lg} {
+    //     background: red;
+    // }
+    
+
+    // @media ${device.md} {
+    //     background: green;
+    // }
+
+    @media ${device.sm} {
+        width: 50%;
+        height: 50%;
+        top: calc(25%);
+        left: calc(25%);
+        background: blue;
+    }    
+`
+
+const Overlay = styled.div<{ active: boolean }>`
+    background: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    display: ${props => props.active ? "flex" : "none"};
+    z-index: 2;
+    // pointer-events: none;
 `
 
 
@@ -195,7 +241,6 @@ const Food_Details = styled.div`
     display: flex;
     justify-content: center;
 `
-
 
 const Left = styled.div`
     width: 30%;
@@ -230,15 +275,16 @@ const Close_Btn = styled.div`
 `
 
 const Thumbnail = styled.img`
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 `
 
 const Panel_Title = styled.div`
     margin: 5px;
-    font-weight: bold;
-    width: 95%;
-    /* background: red; */
+    font-size: 24px;
+    width: 100%;
     text-align: center;
 `
 
@@ -248,11 +294,11 @@ const Top = styled.div`
     padding: 5px;
 `
 const Bottom = styled.div`
-    height: calc(100% - 10px - 25px); // 10px for padding, rest for top size
-    padding: 5px;
+    height: calc(100% - 25px); // 10px for padding, rest for top size
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
+    width: 100%;
 `
 
 
@@ -286,14 +332,20 @@ const Buttons = styled.div`
     margin-top: 20px;
 `
 
-const Selected_Food = styled.div``
+const Selected_Food = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
 
 const View_Buttons = styled.div`
     display: flex;
+    justify-content: center;
+    width: 100%;
 `
 
-const View_Button = styled.div`
-    background: ${props => props.theme.dp3};
+const View_Button = styled.div<{active: boolean}>`
+    background: ${props => props.active ? props.theme.dp5 : props.theme.dp1};
     padding: 5px;
     border-radius: 3px;
     margin: 5px;
@@ -306,10 +358,16 @@ const View_Button = styled.div`
 
 const Servings = styled.div`
     display: flex;
-    justify-content: center;
-    margin-bottom: 8px;
-    display: flex;
     flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+    
+`
+
+const Servings_Text = styled.div`
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
 `
 
 const Food_Name = styled.div`

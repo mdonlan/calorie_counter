@@ -352,3 +352,44 @@ export function get_recent_weights() {
     .then(res => {return res.body})
     .catch(e => console.log(e))
 }
+
+function get_nutrient(food, index) {
+    const value = food.full_nutrients.find(a => a.attr_id == index);
+    if (value == undefined) return 0;
+    return value.value;
+}
+
+export function convert_nutritionix_food(food, meal) {
+    // console.log("nutritionix_food: ", nutritionix_food);
+
+    const new_food: Food = {
+        food_name: food.food_name,
+        calories_per_serving: get_nutrient(food, 208),
+        servings: 1,
+        serving_qty: food.serving_qty,
+        // serving_size: food.serving_unit,
+        carbs: get_nutrient(food, 205),
+        protein: get_nutrient(food, 203),
+        total_fat: get_nutrient(food, 204),
+        trans_fat: get_nutrient(food, 605),
+        sat_fat: get_nutrient(food, 606),
+        poly_fat: get_nutrient(food, 646),
+        mono_fat: get_nutrient(food, 645),
+        cholesterol: get_nutrient(food, 601),
+        sodium: get_nutrient(food, 307),
+        potassium: get_nutrient(food, 306),
+        fiber: get_nutrient(food, 291),
+        sugar: get_nutrient(food, 269),
+        vitamin_a: get_nutrient(food, 318),
+        vitamin_c: get_nutrient(food, 401),
+        calcium: get_nutrient(food, 301),
+        iron: get_nutrient(food, 303),
+        meal:  meal,
+        serving_unit: food.serving_unit,
+        alt_measures: [],
+        photo: food.photo.thumb
+    }
+
+    // console.log(food);
+    return new_food;
+}

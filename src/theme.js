@@ -20,6 +20,7 @@ export const size = {
     lg: '1200px'
 };
 
+
 export const device = {
     sm: `(max-width: ${size.sm})`,
     md: `(max-width: ${size.md})`,

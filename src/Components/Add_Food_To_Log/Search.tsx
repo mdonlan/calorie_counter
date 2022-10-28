@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { search_foods } from '../../api'
+// import { search_foods } from '../../api'
 import styled from 'styled-components'
 import { Search_Results_Nutritionix } from './Search_Results_Nutritionix';
 // import { Search_Results_User_Created } from './Search_Results_User_Created';
@@ -10,10 +10,12 @@ export function Search(props) {
     // const [results, set_results] = useState([]);
     // const [query, set_query] = useState('');
     // const history = useHistory();
-    const input_ref = useRef();
+    const input_ref = useRef(null);
 
     useEffect(() => {
-        input_ref.current.focus(); // set the focus on load
+        if (input_ref.current) {
+            input_ref.current.focus(); // set the focus on load
+        }
     }, []);
 
     function onchange_handler(e) {
@@ -29,7 +31,14 @@ export function Search(props) {
     )
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // margin: 5px;
+`
+
 const Input = styled.input`
     &:focus {
         outline: none;

@@ -28,6 +28,7 @@ export interface Food {
     iron: number;
     serving_unit: string;
     alt_measures: Alt_Measure[];
+    photo: string;
 }
 
 export interface Alt_Measure {
