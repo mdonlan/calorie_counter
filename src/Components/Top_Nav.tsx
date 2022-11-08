@@ -25,8 +25,7 @@ export default function Top_Nav() {
             {/* <Right> */}
                 {!logged_in &&
                     <React.Fragment>
-                        <Styled_Link to={'/Register'}>Register</Styled_Link>
-                        <Styled_Link to={'/Login'}>Login</Styled_Link>
+                        <Styled_Link to={'/'}>Home</Styled_Link>
                     </React.Fragment>
                 }
             {/* </Right> */}

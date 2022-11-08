@@ -39,19 +39,14 @@ export function App() {
         <Wrapper>
             <Router>
                 <Top_Nav />
-                {logged_in &&
-                    <Switch>
-                        <Route path="/" exact component={Home} />
-                        <Route path="/food" component={Food} />
-                        <Route path="/register" component={Register} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/weekly_chart" component={Weekly_Chart} />
-                        {/* <Route path="/create_user_food" component={Create_User_Food} />  */}
-                    </Switch>
-                }
-                {!logged_in &&
-                    <Login_Or_Register />
-                }
+                <Switch>
+                    <Route path="/" exact component={Home} />
+                    <Route path="/food" component={Food} />
+                    <Route path="/register" component={Register} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/weekly_chart" component={Weekly_Chart} />
+                    {/* <Route path="/create_user_food" component={Create_User_Food} />  */}
+                </Switch>
             </Router>
         </Wrapper>
     )
