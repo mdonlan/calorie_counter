@@ -137,7 +137,9 @@ export function validate_token(token) {
         }
     })
     .catch(e => {
-        console.log(e);
+        // console.log(e);
+        stored_token = null;
+        localStorage.setItem("token", null);
     })
 }
 

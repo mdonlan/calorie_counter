@@ -9,6 +9,7 @@ export function Login(props) {
     const [password, set_password] = useState('');
     const logged_in = useSelector(state => state.default.logged_in);
     const history = useHistory();
+    const [status, set_status] = useState(null);
 
     async function handle_submit(e) {
         e.preventDefault();
@@ -20,8 +21,10 @@ export function Login(props) {
             result = await login({ username: username, password: password});
         } catch (e) {
             console.log(e);
+            
         }
-        console.log(result)
+        set_status(result);
+        // console.log(result)
         history.push('/');
         
     }
@@ -32,6 +35,9 @@ export function Login(props) {
                 <Styled_Input onChange={e => {set_username(e.target.value)}} value={username} placeholder='username'></Styled_Input>
                 <Styled_Input onChange={e => {set_password(e.target.value)}} value={password} placeholder='password' type='password'></Styled_Input>
                 <Login_Btn onClick={(e) => handle_submit(e)} onSubmit={(e) => handle_submit(e)}>Login</Login_Btn>
+                {status &&
+                    <div>{status}</div>
+                }
             </Form>
         </Wrapper>
     )
