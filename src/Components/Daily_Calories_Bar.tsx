@@ -15,6 +15,9 @@ export function Daily_Calorie_Bar() {
     const [current_fill_width, set_current_fill_width] = useState<number>(0);
 
     useEffect(() => {
+
+        if (!user_data) return;
+
         const total = daily_food_items.reduce((accumulator: number, object: Food) => {
             return accumulator + object.calories_per_serving * object.servings;
         }, 0);
@@ -45,7 +48,7 @@ export function Daily_Calorie_Bar() {
                     <Fill width={current_fill_width}></Fill>
                 }
             </Bar>
-            <Total>{Math.round(calories)}/{user_data.daily_calorie_target}</Total>
+            <Total>{Math.round(calories)}/{user_data && user_data.daily_calorie_target}</Total>
         </Wrapper>
     )
 }

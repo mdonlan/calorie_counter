@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 // import { useSelector } from 'react-redux';
 import { RootState } from '../store';
+import { logout } from '../api'
 
 export default function Top_Nav() {
 
@@ -13,7 +14,8 @@ export default function Top_Nav() {
 
     return (
         <Wrapper>
-            {/* <Left> */}
+            <Left>
+                <Title>Calorie Counter</Title>
                 {logged_in &&
                     <React.Fragment>
                         <Styled_Link to={'/'}>Home</Styled_Link>
@@ -21,14 +23,18 @@ export default function Top_Nav() {
                         <Styled_Link to={'/create_user_food'}>Create User Food</Styled_Link>
                     </React.Fragment>
                 }
-            {/* </Left> */}
-            {/* <Right> */}
-                {!logged_in &&
+            </Left>
+            {/* <Center>Calorie Counter</Center> */}
+            <Right>
+                {logged_in &&
+                    <Logout_Btn onClick={logout}>Logout</Logout_Btn>
+                }
+                {/* {!logged_in &&
                     <React.Fragment>
                         <Styled_Link to={'/'}>Home</Styled_Link>
                     </React.Fragment>
-                }
-            {/* </Right> */}
+                } */}
+            </Right>
         </Wrapper>
     )
 }
@@ -44,20 +50,42 @@ const Wrapper = styled.div`
     padding-bottom: 12px;
 `
 
-// const Left = styled.div`
-//     width: 50%;
-//     display: flex;
-//     padding-left: 15px;
-// `
+const Title = styled.div`
+    font-size: 32px;
+`
 
-// const Right = styled.div`
-//     width: 50%;
-//     display: flex;
-//     justify-content: flex-end;
-//     padding-right: 15px;
+const Left = styled.div`
+    width: 50%;
+    display: flex;
+    padding-left: 15px;
+`
+
+const Right = styled.div`
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 15px;
+`
+
+// const Center = styled.div`
+    
 // `
 
 const Styled_Link = styled(Link)`
+    text-decoration: none;
+    color: ${props => props.theme.color};
+    padding: 12px;
+    margin-left: 6px;
+    margin-right: 6px;
+    cursor: pointer;
+    background: ${props => props.theme.dp2};
+
+    :hover {
+        background: ${props => props.theme.dp3};
+    }
+`
+
+const Logout_Btn = styled.div`
     text-decoration: none;
     color: ${props => props.theme.color};
     padding: 12px;

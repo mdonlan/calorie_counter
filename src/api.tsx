@@ -106,13 +106,14 @@ export function delete_food_from_log(food) {
 
 // register a new user
 export function register_user(data) {
-    return axios.post(`${host}/register_user`, 
-       { "data": data }
-    )
+    console.log("api.tsx -- register_user()")
+    console.log("register_user data: ", data)
+    return axios.post(`${host}/register_user`, data)
     .then(res => {
         localStorage.setItem("token", res.data.token);
         stored_token = res.data.token;
-        return res.data.message;
+        store.dispatch(set_logged_in(true));
+        return res.data;
     })
     .catch(e => {
         console.log(e.response);
@@ -277,6 +278,15 @@ export function login(data) {
     //     console.log(e)
     //     return e.message;
     // })
+}
+
+export function logout() {
+    console.log("logout!")
+    localStorage.removeItem("token");
+    // stored_token = res.body.token;
+        // store.dispatch(set_token(res.body.token));
+        store.dispatch(set_logged_in(false));
+        // return res.body.message;
 }
 
 // export function create_user_food(data) {

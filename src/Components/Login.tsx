@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {login} from '../api'
 import { useHistory } from 'react-router-dom';
+import { RootState } from '../store';
 
 export function Login(props) {
     const [username, set_username] = useState('');
     const [password, set_password] = useState('');
-    const logged_in = useSelector(state => state.default.logged_in);
+    const logged_in = useSelector((state: RootState) => state.default.logged_in);
     const history = useHistory();
     const [status, set_status] = useState(null);
 
@@ -23,9 +24,9 @@ export function Login(props) {
             console.log(e);
             
         }
-        set_status(result);
+        set_status(result.message);
         // console.log(result)
-        history.push('/');
+        // history.push('/');
         
     }
 
@@ -43,7 +44,9 @@ export function Login(props) {
     )
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+    width: 100%;
+`
 
 const Form = styled.form`
     display: flex;
@@ -57,8 +60,14 @@ const Styled_Input = styled.input`
     background: #333333;
     padding: 5px;
     text-decoration: none;
-    border: none;
-    color: #dddddd
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #dddddd;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 35px;
+    text-align: center;
+    width: calc(100% - 10px);
+    font-size: 16px;
 `
 
 const Login_Btn = styled.div`
@@ -66,9 +75,13 @@ const Login_Btn = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
     cursor: pointer;
-    background: #333333;
+    background: #32a11f;
 
     :hover {
-        background: #444444;
+        background: #33cc18;
     }
+
+    width: calc(100% - 20px);
+    text-align: center;
+    font-size: 20px;
 `

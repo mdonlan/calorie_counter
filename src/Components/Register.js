@@ -1,16 +1,25 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { register_user } from '../api'
+import { history, useHistory } from 'react-router-dom'
 
-export function Register() {
+export function Register(props) {
     const [email, set_email] = useState('');
     const [username, set_username] = useState('');
     const [password, set_password] = useState('');
     const [status, set_status] = useState(null);
 
+    const history = useHistory();
+
     async function handle_submit(data) {
         const result = await register_user(data);
-        set_status(result);
+        set_status(result.message);
+
+        // if (data.success) {
+        //     setTimeout(() => {
+        //         history.push('/');
+        //     }, 1000);
+        // }
     }
 
     return (
@@ -30,6 +39,7 @@ export function Register() {
 }
 
 const Wrapper = styled.div``
+
 const Form = styled.form`
     display: flex;
     flex-direction: column;
@@ -42,8 +52,14 @@ const Styled_Input = styled.input`
     background: #333333;
     padding: 5px;
     text-decoration: none;
-    border: none;
-    color: #dddddd
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #dddddd;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 35px;
+    text-align: center;
+    width: calc(100% - 10px);
+    font-size: 16px;
 `
 
 const Register_Btn = styled.div`
@@ -51,9 +67,13 @@ const Register_Btn = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
     cursor: pointer;
-    background: #333333;
+    background: #32a11f;
 
     :hover {
-        background: #444444;
+        background: #33cc18;
     }
+
+    width: calc(100% - 20px);
+    text-align: center;
+    font-size: 20px;
 `
